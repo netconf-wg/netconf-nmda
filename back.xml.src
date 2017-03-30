@@ -1,0 +1,32 @@
+<!-- -*- nxml -*- -->
+
+<references title="Normative References">
+
+  ietf-ref:RFC2119
+
+  ietf-ref:RFC3688
+
+  ietf-ref:RFC6020
+
+  ietf-ref:RFC6241
+
+  ietf-ref:RFC6242
+
+  ietf-ref:RFC6991
+
+  ietf-ref:RFC6536
+
+  ietf-ref:RFC7950
+
+  ietf-ref:I-D.ietf-netmod-revised-datastores
+
+</references>
+
+<references title="Informative References">
+
+  ietf-ref:RFC5277
+
+  ietf-ref:RFC6470
+
+</references>
+
