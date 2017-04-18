@@ -81,6 +81,20 @@ diagrams is as follows:
 marked with a colon (":").
 - Ellipsis ("...") stands for contents of subtrees that are not shown.
 
+** Summary of Changes from RFC 7895
+
+// RFC Ed.: update the date below with the date of RFC publication
+// and remove this note.
+
+This document obsoletes ^RFC7895^, while defining revision 2017-04-29
+of the "ietf-yang-library" module.  This revision includes the following
+change:
+
+- Introduces support for indicating which datastores a YANG module
+  is supported in.  This change is needed to enable some modules 
+  to be available in a subject of all possible datastores.
+
+
 * YANG Module Library
 
 The "ietf-yang-library" module provides information about

@@ -53,7 +53,8 @@ module ietf-yang-library {
   // and remove this note.
   revision 2017-04-29 {
     description
-      "FIXME";
+      "Updated to add support for indicating which datastores a
+       YANG module is accessible in.";
     reference
       "RFC XXXX: YANG Module Library.";
   }
