@@ -53,8 +53,9 @@ module ietf-yang-library {
   // and remove this note.
   revision 2017-04-29 {
     description
-      "Updated to add support for indicating which datastores a
-       YANG module is accessible in.";
+      "Updated to add support for indicating which datastores
+       a server supports and, on a per-module basis,  which
+       datastores the module is accessible in.";
     reference
       "RFC XXXX: YANG Module Library.";
   }
@@ -220,6 +221,19 @@ module ietf-yang-library {
   /*
    * Operational state data nodes
    */
+
+  container datastores {
+    config false;
+    description
+      "Identifies which datastores are supported by this server.";
+    leaf-list datastore {
+      type identityref {
+        base ds:datastore;
+      }
+      description
+        "A datastore supported by this server.";
+    }
+  }
 
   container modules-state {
     config false;

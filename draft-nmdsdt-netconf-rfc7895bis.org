@@ -86,13 +86,18 @@ marked with a colon (":").
 // RFC Ed.: update the date below with the date of RFC publication
 // and remove this note.
 
-This document obsoletes ^RFC7895^, while defining revision 2017-04-29
-of the "ietf-yang-library" module.  This revision includes the following
-change:
+This document updates the "ietf-yang-library" module in RFC 7895 in the
+following ways:
 
-- Introduces support for indicating which datastores a YANG module
-  is supported in.  This change is needed to enable some modules 
-  to be available in a subject of all possible datastores.
+- Now supports indicating which datastores are supported by the server.
+  For instance, a traditional NETCONF server might list "candidate",
+  "running", and "startup", while an NMDA-compatable RESTCONF server
+  might list "conventional", "intended", and "operational".
+ 
+- Now supports, on a per-module basis, indicating which datastores the
+  module is supported in.  This change enables a module to be available
+  in a subset of all possible datastores.  For example, the module may
+  be available only a dynamic datastore and <operational>.
 
 
 * YANG Module Library
@@ -104,24 +109,32 @@ written in any revision of YANG.
 
 Following is the YANG Tree Diagram for the "ietf-yang-library" module:
 
-   +--ro modules-state
-      +--ro module-set-id    string
-      +--ro module* [name revision]
-         +--ro name                yang:yang-identifier
-         +--ro revision            union
-         +--ro schema?             inet:uri
-         +--ro namespace           inet:uri
-         +--ro feature*            yang:yang-identifier
-         +--ro deviation* [name revision]
-         |  +--ro name        yang:yang-identifier
-         |  +--ro revision    union
-         +--ro conformance-type    enumeration
-         +--ro submodule* [name revision]
-            +--ro name        yang:yang-identifier
-            +--ro revision    union
-            +--ro schema?     inet:uri
+    +--ro datastores
+    |  +--ro datastore*   identityref
+    +--ro modules-state
+       +--ro module-set-id    string
+       +--ro module* [name revision]
+          +--ro name                yang:yang-identifier
+          +--ro revision            union
+          +--ro datastore*          identityref
+          +--ro schema?             inet:uri
+          +--ro namespace           inet:uri
+          +--ro feature*            yang:yang-identifier
+          +--ro deviation* [name revision]
+          |  +--ro name        yang:yang-identifier
+          |  +--ro revision    union
+          +--ro conformance-type    enumeration
+          +--ro submodule* [name revision]
+             +--ro name        yang:yang-identifier
+             +--ro revision    union
+             +--ro schema?     inet:uri
+
+** datastores
+
+This mandatory container holds the identifiers of the datastores supported by the server.
 
 ** modules-state
+[Ed: should the above be renamed to "modules", per NMDA guidelines?]
 
 This mandatory container holds the identifiers
 for the YANG data model modules supported by the server.
