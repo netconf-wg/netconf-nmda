@@ -83,8 +83,8 @@ marked with a colon (":").
 
 ** Summary of Changes from RFC 7895
 
-// RFC Ed.: update the date below with the date of RFC publication
-// and remove this note.
+RFC Ed.: update the date below with the date of RFC publication and
+remove this note.
 
 This document updates the "ietf-yang-library" module in RFC 7895 in the
 following ways:
@@ -92,7 +92,7 @@ following ways:
 - Now supports indicating which datastores are supported by the server.
   For instance, a traditional NETCONF server might list "candidate",
   "running", and "startup", while an NMDA-compatable RESTCONF server
-  might list "conventional", "intended", and "operational".
+  might list "unified", "intended", and "operational".
  
 - Now supports, on a per-module basis, indicating which datastores the
   module is supported in.  This change enables a module to be available
@@ -103,7 +103,7 @@ following ways:
 * YANG Module Library
 
 The "ietf-yang-library" module provides information about
-the YANG library used by a server. This module is defined
+the modules used by a server. This module is defined
 using YANG version 1, but it supports the description of YANG modules
 written in any revision of YANG.
 
@@ -134,7 +134,7 @@ Following is the YANG Tree Diagram for the "ietf-yang-library" module:
 This mandatory container holds the identifiers of the datastores supported by the server.
 
 ** modules-state
-[Ed: should the above be renamed to "modules", per NMDA guidelines?]
+[DISCUSS: should the above be renamed to "modules" per NMDA guidelines?]
 
 This mandatory container holds the identifiers
 for the YANG data model modules supported by the server.
@@ -192,22 +192,25 @@ remove this note.
 
 ** YANG Module Registry
 
-This document registers one URI in the IETF XML registry
-^RFC3688^. Following the format in RFC 3688, the following
-registration is requested to be made.
+RFC 7895 previously registered one URI in the IETF XML registry
+^RFC3688^.  Following the format in RFC 3688, the following
+registration was made:
 
      URI: urn:ietf:params:xml:ns:yang:ietf-yang-library
      Registrant Contact: The NETCONF WG of the IETF.
      XML: N/A, the requested URI is an XML namespace.
 
-This document registers one YANG module in the "YANG Module Names"
-registry ^RFC6020^.
+This document takes over this registration entry made by RFC 7895.
+
+RFC 7895 previously registered one YANG module in the 
+"YANG Module Names" registry ^RFC6020^ as follows:
 
   name:         ietf-yang-library
   namespace:    urn:ietf:params:xml:ns:yang:ietf-yang-library
   prefix:       yanglib
-  // RFC Ed.: replace XXXX with RFC number and remove this note
-  reference:    RFC XXXX
+  reference:    RFC 7895
+
+This document takes over this registration entry made by RFC 7895.
 
 * Security Considerations
 
