@@ -8,9 +8,12 @@ information.
 
 * Introduction
 
-There is a need for standard mechanisms to identify the YANG modules
-and submodules that are in use by a server that implements YANG data
-models.  If a large number of YANG modules are utilized by the server,
+There is a need for standard mechanisms to provide the operational
+state of the server.  This includes, for instance, identifying the
+YANG modules and datastores that are in use by a server and how
+they relate to each other.
+
+If a large number of YANG modules are utilized by the server,
 then the YANG library contents needed can be relatively large.  This
 information changes very infrequently, so it is important that clients
 be able to cache the YANG library contents and easily identify whether
@@ -27,6 +30,9 @@ The following information is needed by a client application
 (for each YANG module in the library)
 to fully utilize the YANG data modeling language:
 
+- identifier: a unique identifier for the module that includes
+the module's name, revision, features, and deviations.
+
 - name: The name of the YANG module.
 
 - revision: Each YANG module and submodule within the library
@@ -39,10 +45,21 @@ zero-length string.
 used by the module MUST be identified.
 
 - feature list: The name of each YANG feature supported by the
-server MUST be identified.
+server, in a given context, MUST be identified.
 
 - deviation list: The name of each YANG module used for deviation
-statements MUST be identified.
+statements, in a given context, MUST be identified.
+
+The following information is needed by a client application
+(for each datastore supported by the server) to fully access
+all the YANG-modelled data available on the server:
+
+- identity: the YANG identity for the datastore.
+
+- properties: properties supported by the datastore.
+
+- modules: modules supported by the datastore, including any features and deviations.
+
 
 ** Terminology
 
@@ -63,8 +80,8 @@ The following terms are defined in ^RFC7950^:
 
 The following terms are used within this document:
 
-- YANG library: A collection of YANG modules and submodules
-used by a server.
+- YANG library: A collection of metadata describing the server's
+operational state.
 
 ** Tree Diagrams
 
@@ -81,42 +98,153 @@ diagrams is as follows:
 marked with a colon (":").
 - Ellipsis ("...") stands for contents of subtrees that are not shown.
 
+
+** Motivation for rfc7895bis
+
+RFC Ed.: delete this section, including this note, at time of publication.
+
+All NETCONF servers supporting YANG 1.1 ^RFC7950^ MUST support YANG Library
+(see Section 5.6.4 of RFC 7950).  Similarly, all RESTCONF servers MUST
+support YANG Library (see Section 10 of RFC 8040).  These requirements
+are independent of if the server supports NMDA or not.
+
+RFC 7895 has a mandatory to implement 'modules-state' tree that a server
+uses to advertise all the modules it supports.  However, this module was
+designed assuming the all modules would be in all datastores, and with the
+same number of features and deviations.  However, this is not the case
+with NMDA-compatible servers that may have some modules that only appear
+in <operational> (e.g., ietf-network-topo) or only also appear in a dynamic
+datastore (e.g., i2rs-ephemeral-rib).  It is also possible that a server
+only implements a module in <running>, at it hasn't yet coded support for
+returning the module's opstate yet.  Presumably, an NMDA-supporting server
+would return all modules implemented in every datastore, but this would be
+misleading to existing clients and unhelpful to NMDA-aware clients.
+
+In the end, it appears that the 'modules-state' node should be for non-NMDA
+aware clients.  For backwards compatability, an NMDA-supporting server SHOULD
+populate 'modules-state' with modules that only appear in <running>.  The new
+'yang-library' node would be ignored by legacy clients, while providing
+all the data needed for NMDA-aware clients, which would ignore the 'modules-state'
+tree.
+
+In addition to resolving the 'modules-state' node NMDA-incompatibility issue
+described above, the solution presented in this document is further motivated
+by the following desires:
+
+- leverage Section 5.6.4 of RFC 7950 and Section 10 of RFC 8040.
+- indicate which modules are supported by each datastore
+- enable the features and deviations to vary by datastore
+- structure extensible to support schema-mount
+- provide a top-level container for all server metadata
+
+
+
 ** Summary of Changes from RFC 7895
 
-RFC Ed.: update the date below with the date of RFC publication and
-remove this note.
+This document updates ^RFC7895^ in the following ways:
 
-This document updates the "ietf-yang-library" module in RFC 7895 in the
-following ways:
+- Renames document title from "YANG Module Library" to "YANG Library".
 
-- Now supports indicating which datastores are supported by the server.
-  For instance, a traditional NETCONF server might list "candidate",
-  "running", and "startup", while an NMDA-compatable RESTCONF server
-  might list "unified", "intended", and "operational".
- 
-- Now supports, on a per-module basis, indicating which datastores the
-  module is supported in.  This change enables a module to be available
-  in a subset of all possible datastores.  For example, the module may
-  be available only a dynamic datastore and <operational>.
+- Adds new top-level "yang-library" container to hold many types of
+  server metadata: modules supported, datastores supported, relationships
+  between datastores and modules, etc.
+
+- Deprecates the modules-state tree.
 
 
-* YANG Module Library
+** Summary of Updates to RFC 7950
+
+This document updates ^RFC7950^ in the following ways:
+
+1. Section 5.6.4 says:
+
+   A NETCONF server MUST announce the modules it implements (see
+   Section 5.6.5) by implementing the YANG module "ietf-yang-library"
+   defined in [RFC7895] and listing all implemented modules in the
+   "/modules-state/module" list.
+
+This should be updated to allow for also listing all implemented
+modules in the "/yang-library/modules/module" list or, more generally,
+use the entire YANG Library.
+
+2. Section 5.6.4 also says:
+
+   The parameter "module-set-id" has the same value as the leaf
+   "/modules-state/module-set-id" from "ietf-yang-library".  This
+   parameter MUST be present.
+
+This should be updated to say that, for NMDA-capable servers, this
+parameter has the same value as the leaf "/yang-library/module-sets/module-set/id",
+for the module-set that is used by <running>.
+
+
+
+** Summary of Updates to RFC 8040
+
+This document updates ^RFC8040^ in the following ways:
+
+1. Section 10.1 says that the "modules-state/module" list is mandatory.
+This should be updated to allow for also listing all supported modules
+in the "/yang-library/modules/module" list or, more generally, use the
+entire YANG Library.
+
+
+
+** Open Issues
+
+- The per-datastore 'properties' idea is still being discussed.  It's
+  included here so as to provide something to point at.
+
+- There's debate if there should be a list of module-sets or if instead
+  each 'module-set' should be embeded into the datastore definition.
+  This discussion goes into if a datastore can reference more than one
+  module-set.
+
+
+* YANG Library
 
 The "ietf-yang-library" module provides information about
 the modules used by a server. This module is defined
 using YANG version 1, but it supports the description of YANG modules
 written in any revision of YANG.
 
-Following is the YANG Tree Diagram for the "ietf-yang-library" module:
+Following is the YANG Tree Diagram for the "ietf-yang-library" module,
+including the deprecated 'modules-state' tree:
 
-    +--ro datastores
-    |  +--ro datastore*   identityref
-    +--ro modules-state
+    +--ro yang-library
+    |  +--ro modules
+    |  |  +--ro module* [id]
+    |  |     +--ro id                  string
+    |  |     +--ro name?               yang:yang-identifier
+    |  |     +--ro revision?           union
+    |  |     +--ro schema?             inet:uri
+    |  |     +--ro namespace           inet:uri
+    |  |     +--ro feature*            yang:yang-identifier
+    |  |     +--ro deviation* [name revision]
+    |  |     |  +--ro name        yang:yang-identifier
+    |  |     |  +--ro revision    union
+    |  |     +--ro conformance-type    enumeration
+    |  |     +--ro submodule* [name revision]
+    |  |        +--ro name        yang:yang-identifier
+    |  |        +--ro revision    union
+    |  |        +--ro schema?     inet:uri
+    |  +--ro module-sets
+    |  |  +--ro module-set*
+    |  |     +--ro id?       string
+    |  |     +--ro module*   -> /yang-library/modules/module/id
+    |  +--ro datastores
+    |     +--ro datastore* [name]
+    |        +--ro name           identityref
+    |        +--ro properties
+    |        |  +--ro property*   identityref
+    |        +--ro module-sets
+    |           +--ro module-set*
+    |                        -> /yang-library/module-sets/module-set/id
+    x--ro modules-state
        +--ro module-set-id    string
        +--ro module* [name revision]
           +--ro name                yang:yang-identifier
           +--ro revision            union
-          +--ro datastore*          identityref
           +--ro schema?             inet:uri
           +--ro namespace           inet:uri
           +--ro feature*            yang:yang-identifier
@@ -129,12 +257,29 @@ Following is the YANG Tree Diagram for the "ietf-yang-library" module:
              +--ro revision    union
              +--ro schema?     inet:uri
 
-** datastores
+** yang-library
 
-This mandatory container holds the identifiers of the datastores supported by the server.
+This mandatory container holds all of the server's metadata.
+
+*** yang-library/modules/module
+
+This mandatory list contains one entry for each unique instance
+of a module in use by the server.  Each entry is distiguished
+by the module's name, revisions, features, and deviations.
+
+*** yang-library/module-sets/module-set
+
+This mandatory list contains one entry for each module-set
+in use by the server (e.g., presented by a datastore).
+
+*** yang-library/datastores/datastore
+
+This mandatory list contains one entry for each datastore
+supported by the server.  Each datastore entry both identifies
+any special propoerties it has and any module-sets it uses.
+
 
 ** modules-state
-[DISCUSS: should the above be renamed to "modules" per NMDA guidelines?]
 
 This mandatory container holds the identifiers
 for the YANG data model modules supported by the server.
@@ -186,7 +331,7 @@ are used by this module for some type definitions.
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
 
-!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2017-04-21.yang"
+!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2017-06-26.yang"
 
 * IANA Considerations @iana@
 
@@ -262,8 +407,9 @@ The Space & Terrestrial Communications Directorate (S&TCD).
     ipr trust200902;
     category std;
     references back.xml;
+    updates rfc7950, rfc8040;
     obsoletes rfc7895;
-    title "YANG Module Library";
+    title "YANG Library";
     abbreviation "YANG Library";
     contributor "author:Andy Bierman:YumaWorks:andy@yumaworks.com";
     contributor "author:Martin Bjorklund:Tail-f Systems:mbj@tail-f.com";
