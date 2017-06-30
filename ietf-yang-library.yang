@@ -51,14 +51,10 @@ module ietf-yang-library {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  // RFC Ed.: replace XXXX with actual RFC number and remove this
-  // note.
-
-  // RFC Ed.: remove this note
-  // Note: extracted from draft-ietf-netconf-yang-library-06.txt
-
   // RFC Ed.: update the date below with the date of RFC publication
   // and remove this note.
+  // RFC Ed.: replace XXXX with actual RFC number and remove this
+  // note.
   revision 2017-06-26 {
     description
       "Initial revision.";

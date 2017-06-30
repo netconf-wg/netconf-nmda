@@ -122,10 +122,10 @@ misleading to existing clients and unhelpful to NMDA-aware clients.
 
 In the end, it appears that the 'modules-state' node should be for non-NMDA
 aware clients.  For backwards compatability, an NMDA-supporting server SHOULD
-populate 'modules-state' with modules that only appear in <running>.  The new
+populate 'modules-state' in a backwards-compatible manner.  The new
 'yang-library' node would be ignored by legacy clients, while providing
-all the data needed for NMDA-aware clients, which would ignore the 'modules-state'
-tree.
+all the data needed for NMDA-aware clients, which would themselves ignore
+the 'modules-state' tree.
 
 In addition to resolving the 'modules-state' node NMDA-incompatibility issue
 described above, the solution presented in this document is further motivated
@@ -234,12 +234,10 @@ including the deprecated 'modules-state' tree:
     |  |     +--ro module*   -> /yang-library/modules/module/id
     |  +--ro datastores
     |     +--ro datastore* [name]
-    |        +--ro name           identityref
+    |        +--ro name          identityref
     |        +--ro properties
     |        |  +--ro property*   identityref
-    |        +--ro module-sets
-    |           +--ro module-set*
-    |                        -> /yang-library/module-sets/module-set/id
+    |        +--ro module-set?   -> /yang-library/module-sets/module-set/id
     x--ro modules-state
        +--ro module-set-id    string
        +--ro module* [name revision]
