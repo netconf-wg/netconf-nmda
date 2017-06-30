@@ -55,11 +55,11 @@ module ietf-yang-library {
   // and remove this note.
   // RFC Ed.: replace XXXX with actual RFC number and remove this
   // note.
-  revision 2017-06-26 {
+  revision 2017-06-30 {
     description
-      "Initial revision.";
+      "Updated revision.";
     reference
-      "RFC XXXX: YANG Module Library.";
+      "RFC XXXX: YANG Library.";
   }
   revision 2016-04-09 {
     description
