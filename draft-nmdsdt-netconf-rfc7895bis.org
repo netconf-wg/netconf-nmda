@@ -329,7 +329,7 @@ are used by this module for some type definitions.
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
 
-!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2017-06-30.yang"
+!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2017-07-03.yang"
 
 * IANA Considerations @iana@
 

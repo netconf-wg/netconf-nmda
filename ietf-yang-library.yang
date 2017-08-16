@@ -34,9 +34,10 @@ module ietf-yang-library {
                <mailto:kwatsen@juniper.net>";
 
   description
-    "This module contains monitoring information about the YANG
-     modules and submodules that are used within a YANG-based
-     server.
+    "This module contains information about the YANG server
+     instance, including the modules and datastores the
+     server supports, and which modules are present in
+     which datastores.
 
      Copyright (c) 2016 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
@@ -55,7 +56,7 @@ module ietf-yang-library {
   // and remove this note.
   // RFC Ed.: replace XXXX with actual RFC number and remove this
   // note.
-  revision 2017-06-30 {
+  revision 2017-07-03 {
     description
       "Updated revision.";
     reference
@@ -90,6 +91,7 @@ module ietf-yang-library {
 
     leaf name {
       type yang:yang-identifier;
+      mandatory true;
       description
         "The YANG module or submodule name.";
     }
@@ -98,6 +100,7 @@ module ietf-yang-library {
         type revision-identifier;
         type string { length 0; }
       }
+      mandatory true;
       description
         "The YANG module or submodule revision date.
          A zero-length string is used if no revision statement
@@ -146,11 +149,17 @@ module ietf-yang-library {
         leaf id {
           type string;
           description
-            "A system-generated value that uniquely represents the
-             module listing, including its name, revision, features,
-             and deviations.";
+            "A stable identifier, independent of any other part
+             of this module instance.";
         }
  
+        leaf checksum {
+          type string;
+          description
+            "A value that uniquely represents the entirety of
+             this module instance, except for the key, 'id'.";
+        }
+
         uses common-leafs2;
         uses schema-leaf2;
 
@@ -241,7 +250,11 @@ module ietf-yang-library {
         leaf id {
           type string;
           description
-            "A server-supplied identifier for this set of modules.";
+            "A system-generated value that uniquely represents the
+             referenced set of modules.  Any change to the number
+             of modules referenced, or to the modules themselves, 
+             reflected in their 'checksum' leaf values, generates
+             a different value.";
         }
         leaf-list module {
           type leafref {
@@ -464,8 +477,8 @@ module ietf-yang-library {
       mandatory true;
       description
         "Contains the module-set-id value representing the
-         set of modules and submodules supported at the server at
-         the time the notification is generated.";
+         set of modules and submodules supported at the server 
+         at the time the notification is generated.";
     }
   }
 
