@@ -9,6 +9,8 @@ kramdown-rfc2629 ?= kramdown-rfc2629
 oxtradoc ?= oxtradoc
 idnits ?= idnits
 
+trees = ietf-yang-library.tree
+
 draft := $(basename $(lastword $(sort $(wildcard draft-*.xml)) $(sort $(wildcard draft-*.md)) $(sort $(wildcard draft-*.org)) ))
 
 ifeq (,$(draft))
@@ -55,7 +57,7 @@ back.xml: back.xml.src
 $(next).xml: $(draft).xml
 	sed -e"s/$(basename $<)-latest/$(basename $@)/" $< > $@
 
-$(draft).xml: back.xml ietf-yang-library.yang
+$(draft).xml: back.xml $(trees) ietf-yang-library.yang
 
 .INTERMEDIATE: $(draft).xml
 %.xml: %.md
@@ -66,6 +68,10 @@ $(draft).xml: back.xml ietf-yang-library.yang
 
 %.txt: %.xml
 	$(xml2rfc) $< -o $@ --text
+
+%.tree: %.yang
+	pyang -p ../../netmod-wg/datastore-dt  \
+	  --max-status current -f tree --tree-line-length 68 $< > $@
 
 ifeq "$(shell uname -s 2>/dev/null)" "Darwin"
 sed_i := sed -i ''
