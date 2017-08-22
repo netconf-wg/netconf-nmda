@@ -49,7 +49,8 @@ ifeq (.org,$(draft_type))
 endif
 
 validate:
-	pyang --ietf -p ../../netmod-wg/datastore-dt ietf-yang-library.yang
+	pyang --ietf --max-line-length 69 \
+	  -p ../../netmod-wg/datastore-dt ietf-yang-library.yang
 
 back.xml: back.xml.src
 	./mk-back $< > $@
