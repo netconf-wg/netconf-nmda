@@ -152,16 +152,6 @@ This document updates ^RFC7895^ in the following ways:
 
 - Deprecates the "yang-library-change" notification.
 
-** Summary of Updates to RFC 8040
-
-This document updates ^RFC8040^ in the following ways:
-
-1. Section 10.1 says that the "modules-state/module" list is mandatory.
-
-This is updated to allow for also listing all supported modules
-in the "/yang-library/modules/module" list or, more generally, use the
-entire YANG Library.
-
 * YANG Library
 
 The "ietf-yang-library" module provides information about
@@ -207,7 +197,7 @@ are used by this module for some type definitions.
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
 
-!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2017-07-03.yang"
+!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2017-08-17.yang"
 
 * IANA Considerations @iana@
 
@@ -223,7 +213,7 @@ registration was made:
 
 This document takes over this registration entry made by RFC 7895.
 
-RFC 7895 previously registered one YANG module in the 
+RFC 7895 previously registered one YANG module in the
 "YANG Module Names" registry ^RFC6020^ as follows:
 
   name:         ietf-yang-library
@@ -283,7 +273,6 @@ The Space & Terrestrial Communications Directorate (S&TCD).
     ipr trust200902;
     category std;
     references back.xml;
-    updates rfc8040;
     obsoletes rfc7895;
     title "YANG Library";
     abbreviation "YANG Library";
