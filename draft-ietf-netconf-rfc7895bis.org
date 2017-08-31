@@ -114,7 +114,7 @@ same number of features and deviations.  However, this is not the case
 with NMDA-compatible servers that may have some modules that only appear
 in <operational> (e.g., ietf-network-topo) or only also appear in a dynamic
 datastore (e.g., i2rs-ephemeral-rib).  It is also possible that a server
-only implements a module in <running>, at it hasn't yet coded support for
+only implements a module in <running>, as it hasn't yet coded support for
 returning the module's opstate yet.  Presumably, an NMDA-supporting server
 would return all modules implemented in every datastore, but this would be
 misleading to existing clients and unhelpful to NMDA-aware clients.
@@ -126,8 +126,7 @@ populate 'modules-state' in a backwards-compatible manner.  The new
 all the data needed for NMDA-aware clients, which would themselves ignore
 the 'modules-state' tree.
 
-In addition to resolving the 'modules-state' node NMDA-incompatibility issue
-described above, the solution presented in this document is further motivated
+The solution presented in this document is further motivated
 by the following desires:
 
 - leverage Section 5.6.4 of RFC 7950 and Section 10 of RFC 8040.
