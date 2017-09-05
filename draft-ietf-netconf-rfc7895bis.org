@@ -165,24 +165,24 @@ excluding the deprecated 'modules-state' tree:
 
 ** yang-library
 
-This mandatory container holds all of the server's metadata.
+This container holds all of the server's metadata.
 
 *** yang-library/modules/module
 
-This mandatory list contains one entry for each unique instance
+This list contains one entry for each unique instance
 of a module in use by the server.  Each entry is distiguished
 by the module's name, revisions, features, and deviations.
 
 *** yang-library/module-sets/module-set
 
-This mandatory list contains one entry for each module-set
+This list contains one entry for each module-set
 in use by the server (e.g., presented by a datastore).
 
 *** yang-library/datastores/datastore
 
-This mandatory list contains one entry for each datastore
-supported by the server.  Each datastore entry both identifies
-any special propoerties it has and any module-sets it uses.
+This list contains one entry for each datastore
+supported by the server.  Each datastore entry identifies the
+module-set it uses.
 
 ** YANG Library Module @library-module@
 
