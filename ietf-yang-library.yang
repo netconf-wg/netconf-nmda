@@ -195,9 +195,15 @@ module ietf-yang-library {
 
     container modules {
       description
-        "A container holding a list of modules.  Note, modules being
-         listed here does not mean that they are supported by any
-         particular datastore.";
+        "A container holding a list of modules.  Modules being
+         listed here does not necessarily mean that they are
+         supported by any particular datastore.
+
+         If a module has the value 'implemented' for it's
+         'conformance-type' leaf in the 'module' list, it means that
+         the server supports the rpcs and notifications defined in
+         the module (adjusted for features and deviations), even if
+         the module is not supported in any particular datastore.";
 
       list module {
         key "id";
@@ -238,8 +244,8 @@ module ietf-yang-library {
     container module-sets {
       description
         "A container for a list of module-sets.  Module-sets being
-         listed here does not mean that they are used by any
-         particular datastore.";
+         listed here does not necessarily mean that they are used by
+         any particular datastore.";
       list module-set {
         key "id";
         description
@@ -269,7 +275,8 @@ module ietf-yang-library {
       description
         "A container for a list of datastores supported by the
          server.  Each datastore indicates which module-sets it
-         supports.";
+         supports.  The server MUST instantiate one entry in this
+         list per specific datastore it supports.";
 
       list datastore {
         key "name";

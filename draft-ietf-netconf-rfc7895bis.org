@@ -97,7 +97,6 @@ diagrams is as follows:
 marked with a colon (":").
 - Ellipsis ("...") stands for contents of subtrees that are not shown.
 
-
 ** Motivation for rfc7895bis
 
 RFC Ed.: delete this section, including this note, at time of publication.
@@ -170,7 +169,7 @@ This container holds all of the server's metadata.
 *** yang-library/modules/module
 
 This list contains one entry for each unique instance
-of a module in use by the server.  Each entry is distiguished
+of a module in use by the server.  Each entry is distinguished
 by the module's name, revisions, features, and deviations.
 
 *** yang-library/module-sets/module-set
