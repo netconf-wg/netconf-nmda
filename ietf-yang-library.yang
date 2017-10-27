@@ -208,13 +208,14 @@ module ietf-yang-library {
       list module {
         key "id";
         description
-          "Each entry represents one revision of one module
-           currently supported by the server.";
+          "Each entry represents a revision of a module currently
+           supported by the server with a particular set of supported
+           features and deviations";
 
         leaf id {
           type string;
           description
-            "A stable identifier, independent of any other part
+            "A unique identifier, independent of any other part
              of this module instance.";
         }
 
