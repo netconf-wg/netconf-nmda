@@ -96,15 +96,11 @@ module ietf-yang-library {
         "The YANG module or submodule name.";
     }
     leaf revision {
-      type union {
-        type revision-identifier;
-        type string { length 0; }
-      }
-      mandatory true;
+      type revision-identifier;
       description
-        "The YANG module or submodule revision date.
-         A zero-length string is used if no revision statement
-         is present in the YANG module or submodule.";
+        "The YANG module or submodule revision date.  If no revision
+         statement is present in the YANG module or submodule, this
+         leaf is not instantiated.";
     }
   }
 
@@ -135,20 +131,23 @@ module ietf-yang-library {
          in the module or any included submodule.";
     }
     list deviation {
-      key "name revision";
+      key "module";
       description
-        "List of YANG deviation module names and revisions used by
+        "List of YANG deviation modules used by
          this server to modify the conformance of the module
          associated with this entry.  Note that the same module can
          be used for deviations for multiple modules, so the same
-         entry MAY appear within multiple 'module' entries.
+         entry MAY appear within multiple 'module' entries.";
 
-         The deviation module MUST be present in the 'module' list,
-         with the same name and revision values.  The
-         'conformance-type' value will be 'implement' for the
-         deviation module.";
-
-      uses module-identification-leafs;
+      leaf module {
+        type leafref {
+          path "../../id";
+        }
+        description
+          "The module that deviates the module associated with this
+           entry.  The deviation modules MUST be part of the same
+           module-sets as the module it deviates.";
+      }
     }
     leaf conformance-type {
       type enumeration {
@@ -232,7 +231,7 @@ module ietf-yang-library {
         uses implementation-parameters;
 
         list submodule {
-          key "name revision";
+          key "name";
           description
             "Each entry represents one submodule within the
              parent module.";
@@ -275,7 +274,7 @@ module ietf-yang-library {
     container datastores {
       description
         "A container for a list of datastores supported by the
-         server.  Each datastore indicates which module-sets it
+         server.  Each datastore indicates which module-set it
          supports.  The server MUST instantiate one entry in this
          list per specific datastore it supports.";
 

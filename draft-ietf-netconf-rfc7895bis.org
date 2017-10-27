@@ -144,6 +144,12 @@ This document updates ^RFC7895^ in the following ways:
   server metadata: modules supported, datastores supported, relationships
   between datastores and modules, etc.
 
+- Adds a set of new groupings as replacements for the deprecated
+  "module-list" grouping.
+
+- Adds a "yang-library-update" notification as a replacement for the
+  deprecated "yang-library-change" notification.
+
 - Deprecates the "modules-state" tree.
 
 - Deprecates the "module-list" grouping.
