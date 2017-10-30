@@ -1,17 +1,23 @@
 # -*- org -*-
 
-This document describes a YANG library that provides information
-about all the YANG modules used by a network management server (e.g.,
-a Network Configuration Protocol (NETCONF) server).  Simple caching
-mechanisms are provided to allow clients to minimize retrieval of this
-information.
+This document describes a YANG library that provides information about
+all the YANG modules and datastores used by a network management
+server (e.g., a Network Configuration Protocol (NETCONF) server).
+Simple caching mechanisms are provided to allow clients to minimize
+retrieval of this information.
 
 * Introduction
 
 There is a need for standard mechanisms to provide the operational
-state of the server.  This includes, for instance, identifying the
-YANG modules and datastores that are in use by a server and how
-they relate to each other.
+state of a network management server.  This includes, for instance,
+identifying the YANG modules and datastores that are in use by a
+server and how they relate to each other.
+
+This document defines a YANG module that can be used to provide this
+informaton, in a way that is compatible with the NMDA
+^I-D.ietf-netmod-revised-datastores^, but that is also backwards
+compatible with the "YANG Module Library" YANG module defined in
+^RFC7895^.
 
 If a large number of YANG modules are utilized by the server,
 then the YANG library contents needed can be relatively large.  This
@@ -35,20 +41,18 @@ the module's name, revision, submodules, features, and deviations.
 
 - name: The name of the YANG module.
 
-- revision: Each YANG module and submodule within the library
-has a revision.  This is derived from the most
-recent revision statement within the module or submodule.  If no such
-revision statement exists, the module's or submodule's revision is the
-zero-length string.
+- revision: Each YANG module and submodule within the library SHOULD
+have a revision.  This is derived from the most recent revision
+statement within the module or submodule.
 
-- submodule list: The name and revision of each submodule
+- submodule list: The name, and if defined, revision of each submodule
 used by the module MUST be identified.
 
 - feature list: The name of each YANG feature supported by the
-server, in a given context, MUST be identified.
+server, in a given datastore schema, MUST be identified.
 
 - deviation list: The name of each YANG module used for deviation
-statements, in a given context, MUST be identified.
+statements, in a given datastore schema, MUST be identified.
 
 The following information is needed by a client application
 (for each datastore supported by the server) to fully access
@@ -76,6 +80,12 @@ The following terms are defined in ^RFC7950^:
 
 - module
 - submodule
+
+The following terms are defined in ^NMDA":
+
+- conventional configuration datastore
+- operational datastore
+- datastore schema
 
 The following terms are used within this document:
 
@@ -158,9 +168,9 @@ This document updates ^RFC7895^ in the following ways:
 
 * YANG Library
 
-The "ietf-yang-library" module provides information about
-the modules used by a server. This module is defined
-using YANG version 1.1, but it supports the description of YANG modules
+The "ietf-yang-library" module provides information about the modules
+and datastores supported by a server.  This module is defined using
+YANG version 1.1, but it supports the description of YANG modules
 written in any revision of YANG.
 
 Following is the YANG Tree Diagram for the "ietf-yang-library" module,
@@ -180,24 +190,57 @@ by the module's name, revisions, features, and deviations.
 
 A server cannot implement different revisions of the same module in
 different datastores, so there MUST only be a single revision of a
-given module in the modules list that has "conformance-type" leaf of
+given module in the "module" list that has a "conformance-type" leaf of
 "implement".
+
+Although the server is at liberty to choose the unique "id" for each
+entry in the "module" list, it is suggested to use an "id" that would
+be meaningful to clients.  For example, "ietf-interfaces@2017-08-17"
+could be used as the "id" for a particular revision of the IETF
+interfaces YANG module.  For a module that holds deviations or
+features specific to a datastore perhaps an "id" that also contains
+the datastore name, like
+"ietf-interfaces-deviations@2017-08-17/operational" could be used.
 
 *** yang-library/module-sets/module-set
 
-This list contains one entry for each module-set
-in use by the server (e.g., presented by a datastore).
+A "module-set" represents the datastore schema that is used by one or
+more datastores.
 
+This list contains one entry for each module set in use by the server
+(e.g., presented by a datastore).
 
+All conventional configuration datastores use the same datastore
+schema, which can normally be modelled using a single module set.
+
+A dynamic configuration datastore may use a different datastore schema
+from the conventional configuration datastores, and hence may require
+a separate module set definition.
+
+The datastore schema for the operational datastore is the superset of
+the datastore schema of all the configuration datastores, but can have
+unsupported nodes removed via datastore specific deviations or by
+omitting one or more modules from the module set associated with the
+operational datastore.
+
+However, where possible, the same module set used for conventional
+configuration datatstores should also be used for the operational
+datastore.  For example, deviations that are specific to "config
+false" nodes could still be applied to a common module instance that
+is also included in the module set used for the conventional
+datastores.
+
+Although the server is at liberty to choose the unique "id" for the
+"module-set" list entry, it is suggested to choose an "id" that would be
+meaningful to clients, perhaps including the datastore name if the
+module set is only relevant to a single datastore.
 
 *** yang-library/datastores/datastore
 
-This list contains one entry for each datastore
-supported by the server.  Each datastore entry identifies the
-module-set it uses.
-
-It the set of modules, features, and deviates is the same for multiple
-datastores then they SHOULD all refer to the same module-set.
+This list contains one entry for each datastore supported by
+the server, and identifes the datastore schema associated with a
+datastore via a reference to a module-set.  Each supported
+conventional configuration datastore has a separate entry.
 
 ** YANG Library Module @library-module@
 
