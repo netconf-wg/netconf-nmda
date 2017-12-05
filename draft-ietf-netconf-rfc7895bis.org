@@ -81,7 +81,7 @@ The following terms are defined in ^RFC7950^:
 - module
 - submodule
 
-The following terms are defined in ^NMDA":
+The following terms are defined in ^I-D.ietf-netmod-revised-datastores^:
 
 - conventional configuration datastore
 - operational datastore
@@ -116,7 +116,7 @@ All NETCONF servers supporting YANG 1.1 ^RFC7950^ MUST support YANG Library
 support YANG Library (see Section 10 of RFC 8040).  These requirements
 are independent of if the server supports NMDA or not.
 
-RFC 7895 has a mandatory to implement 'modules-state' tree that a server
+RFC 7895 has a mandatory to implement "modules-state" tree that a server
 uses to advertise all the modules it supports.  However, this module was
 designed assuming the all modules would be in all datastores, and with the
 same number of features and deviations.  However, this is not the case
@@ -128,12 +128,12 @@ returning the module's opstate yet.  Presumably, an NMDA-supporting server
 would return all modules implemented in every datastore, but this would be
 misleading to existing clients and unhelpful to NMDA-aware clients.
 
-In the end, it appears that the 'modules-state' node should be for non-NMDA
+In the end, it appears that the "modules-state" node should be for non-NMDA
 aware clients.  For backwards compatability, an NMDA-supporting server SHOULD
-populate 'modules-state' in a backwards-compatible manner.  The new
-'yang-library' node would be ignored by legacy clients, while providing
+populate "modules-state" in a backwards-compatible manner.  The new
+"yang-library" node would be ignored by legacy clients, while providing
 all the data needed for NMDA-aware clients, which would themselves ignore
-the 'modules-state' tree.
+the "modules-state" tree.
 
 The solution presented in this document is further motivated
 by the following desires:
@@ -174,7 +174,7 @@ YANG version 1.1, but it supports the description of YANG modules
 written in any revision of YANG.
 
 Following is the YANG Tree Diagram for the "ietf-yang-library" module,
-excluding the deprecated 'modules-state' tree:
+excluding the deprecated "modules-state" tree:
 
 !! include-figure ietf-yang-library.tree
 
@@ -182,7 +182,22 @@ excluding the deprecated 'modules-state' tree:
 
 This container holds all of the server's metadata.
 
-*** yang-library/modules/module
+*** yang-library/schema
+
+An entry in the "schema" list represents the datastore schema that is
+used by one or more datastores.
+
+This list contains one entry for each schema in use by the server
+(e.g., presented by a datastore).
+
+All conventional configuration datastores and the operational
+datastore use the same "schema" entry.
+
+A dynamic configuration datastore may use a different datastore schema
+from the conventional configuration datastores, and hence may require
+a separate "schema" entry.
+
+*** yang-library/schema/module
 
 This list contains one entry for each unique instance
 of a module in use by the server.  Each entry is distinguished
@@ -202,20 +217,7 @@ features specific to a datastore perhaps an "id" that also contains
 the datastore name, like
 "ietf-interfaces-deviations@2017-08-17/operational" could be used.
 
-*** yang-library/module-sets/module-set
-
-A "module-set" represents the datastore schema that is used by one or
-more datastores.
-
-This list contains one entry for each module set in use by the server
-(e.g., presented by a datastore).
-
-All conventional configuration datastores use the same datastore
-schema, which can normally be modelled using a single module set.
-
-A dynamic configuration datastore may use a different datastore schema
-from the conventional configuration datastores, and hence may require
-a separate module set definition.
+*** yang-library/schema/module/
 
 The datastore schema for the operational datastore is the superset of
 the datastore schema of all the configuration datastores, but can have
@@ -235,12 +237,12 @@ Although the server is at liberty to choose the unique "id" for the
 meaningful to clients, perhaps including the datastore name if the
 module set is only relevant to a single datastore.
 
-*** yang-library/datastores/datastore
+*** yang-library/datastore
 
-This list contains one entry for each datastore supported by
-the server, and identifes the datastore schema associated with a
-datastore via a reference to a module-set.  Each supported
-conventional configuration datastore has a separate entry.
+This list contains one entry for each datastore supported by the
+server, and identifies the datastore schema associated with a
+datastore via a reference to an entry in the "schema" list.  Each
+supported conventional configuration datastore has a separate entry.
 
 ** YANG Library Module @library-module@
 
@@ -254,7 +256,7 @@ are used by this module for some type definitions.
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
 
-!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2017-08-17.yang"
+!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2017-11-29.yang"
 
 * IANA Considerations @iana@
 

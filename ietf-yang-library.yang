@@ -34,10 +34,9 @@ module ietf-yang-library {
                <mailto:kwatsen@juniper.net>";
 
   description
-    "This module contains information about the YANG server
-     instance, including the modules and datastores the
-     server supports, and which modules are present in
-     which datastores.
+    "This module contains information about the YANG server instance,
+     including the modules and datastores the server supports, and
+     which modules are present in which datastores.
 
      Copyright (c) 2017 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
@@ -56,7 +55,7 @@ module ietf-yang-library {
   // and remove this note.
   // RFC Ed.: replace XXXX with actual RFC number and remove this
   // note.
-  revision 2017-08-17 {
+  revision 2017-11-29 {
     description
       "Updated revision.";
     reference
@@ -104,11 +103,12 @@ module ietf-yang-library {
     }
   }
 
-  grouping schema-leaf {
+  grouping location-leaf-list {
     description
-      "Common schema leaf parameter for modules and submodules.";
+      "Common location leaf list parameter for modules and
+       submodules.";
 
-    leaf schema {
+    leaf-list location {
       type inet:uri;
       description
         "Contains a URL that represents the YANG schema
@@ -123,66 +123,137 @@ module ietf-yang-library {
     description
       "Parameters for describing the implementation of a module.";
 
-    leaf-list feature {
-      type yang:yang-identifier;
+    list feature {
+      key "name";
       description
         "List of YANG feature names from this module that are
          supported by the server, regardless whether they are defined
          in the module or any included submodule.";
+      leaf name {
+        type yang:yang-identifier;
+        description
+          "A feature supported by the server.";
+      }
     }
     list deviation {
       key "module";
       description
-        "List of YANG deviation modules used by
-         this server to modify the conformance of the module
-         associated with this entry.  Note that the same module can
-         be used for deviations for multiple modules, so the same
-         entry MAY appear within multiple 'module' entries.";
+        "List of YANG deviation modules used by this server to modify
+         the conformance of the module associated with this entry.
+         Note that the same module can be used for deviations for
+         multiple modules, so the same entry MAY appear within
+         multiple 'module' entries.";
 
       leaf module {
         type leafref {
-          path "../../id";
+          path "../../name";
         }
         description
-          "The module that deviates the module associated with this
-           entry.  The deviation modules MUST be part of the same
-           module-sets as the module it deviates.";
+          "A module that deviates the module associated with this
+           entry.";
       }
     }
-    leaf conformance-type {
-      type enumeration {
-        enum implement {
-          description
-            "Indicates that the server implements one or more
-             protocol-accessible objects defined in the YANG module
-             identified in this entry.  This includes deviation
-             statements defined in the module.
+  }
 
-             For YANG version 1.1 modules, there is at most one
-             module entry with conformance type 'implement' for a
-             particular module name, since YANG 1.1 requires that at
-             most one revision of a module is implemented.
+  grouping schema-parameters {
+    description
+      "A set of parameters that describe a schema.";
 
-             For YANG version 1 modules, there SHOULD NOT be more
-             than one module entry for a particular module name.";
-        }
-        enum import {
-          description
-            "Indicates that the server imports reusable definitions
-             from the specified revision of the module, but does not
-             implement any protocol accessible objects from this
-             revision.
-
-             Multiple module entries for the same module name MAY
-             exist. This can occur if multiple modules import the
-             same module, but specify different revision-dates in the
-             import statements.";
-        }
-      }
+    leaf name {
+      type string;
+      description
+        "An arbitrary name of the schema";
+    }
+    leaf checksum {
+      type string;
+      config false;
       mandatory true;
       description
-        "Indicates the type of conformance the server is claiming
-         for the YANG module identified by this entry.";
+        "A server-generated checksum of the contents of the schema.
+         The server MUST change the value of this leaf if the
+         information represented by the schema, except 'checksum',
+         has changed.";
+    }
+    list module {
+      key "name";
+      description
+        "An entry in this list represents a module currently
+         supported by the server with a particular set of supported
+         features and deviations.
+
+         The server implements one or more protocol-accessible
+         objects defined in the YANG module identified in this entry.
+         This includes deviation statements defined in the module.";
+
+      uses module-identification-leafs;
+
+      leaf namespace {
+        type inet:uri;
+        mandatory true;
+        description
+          "The XML namespace identifier for this module.";
+      }
+
+      uses location-leaf-list;
+
+      list submodule {
+        key "name";
+        description
+          "Each entry represents one submodule within the
+           parent module.";
+        uses module-identification-leafs;
+        uses location-leaf-list;
+      }
+
+      uses implementation-parameters;
+    }
+    list import-only-module {
+      key "name revision";
+      description
+        "An entry in this list indicates that the server imports
+         reusable definitions from the specified revision of the
+         module, but does not implement any protocol accessible
+         objects from this revision.
+
+         Multiple entries for the same module name MAY exist.  This
+         can occur if multiple modules import the same module, but
+         specify different revision-dates in the import statements.";
+
+      leaf name {
+        type yang:yang-identifier;
+        description
+          "The YANG module name.";
+      }
+      leaf revision {
+        type union {
+          type revision-identifier;
+          type string {
+            length 0;
+          }
+        }
+        description
+          "The YANG module or revision date.
+           A zero-length string is used if no revision statement
+           is present in the YANG module.";
+      }
+      leaf namespace {
+        type inet:uri;
+        mandatory true;
+        description
+          "The XML namespace identifier for this module.";
+      }
+
+      uses location-leaf-list;
+
+      list submodule {
+        key "name";
+        description
+          "Each entry represents one submodule within the
+           parent module.";
+
+        uses module-identification-leafs;
+        uses location-leaf-list;
+      }
     }
   }
 
@@ -192,130 +263,86 @@ module ietf-yang-library {
        so it can be reused in configuration or another monitoring
        data structure.";
 
-    container modules {
+    list schema {
+      key name;
       description
-        "A container holding a list of modules.  Modules being
-         listed here does not necessarily mean that they are
-         supported by any particular datastore.
+        "A datastore schema that may be used by one or more
+         datastores.";
 
-         If a module has the value 'implemented' for it's
-         'conformance-type' leaf in the 'module' list, it means that
-         the server supports the rpcs and notifications defined in
-         the module (adjusted for features and deviations), even if
-         the module is not supported in any particular datastore.";
-
-      list module {
-        key "id";
-        description
-          "Each entry represents a revision of a module currently
-           supported by the server with a particular set of supported
-           features and deviations";
-
-        leaf id {
-          type string;
+      uses schema-parameters {
+        augment module {
           description
-            "A unique identifier, independent of any other part
-             of this module instance.";
+            "Additional nodes for each module in the schema.";
+
+          leaf-list not-implemented-in {
+            type leafref {
+              path "../../../datastore/name";
+            }
+            description
+              "If the module is not supported in all datastores that
+               refer to this schema, this leaf list contains the
+               names of the datastores that don't support the
+               module.";
+          }
         }
-
-        uses module-identification-leafs;
-        uses schema-leaf;
-
-        leaf namespace {
-          type inet:uri;
-          mandatory true;
+        augment module/feature {
           description
-            "The XML namespace identifier for this module.";
-        }
+            "Additional nodes for each feature in the schema.";
 
-        uses implementation-parameters;
-
-        list submodule {
-          key "name";
-          description
-            "Each entry represents one submodule within the
-             parent module.";
-          uses module-identification-leafs;
-          uses schema-leaf;
+          leaf-list not-implemented-in {
+            type leafref {
+              path "../../../../datastore/name";
+            }
+            description
+              "If the feature is not supported in all datastores that
+               refer to this schema, this leaf list contains the
+               names of the datastores that don't support the
+               feature.";
+          }
         }
       }
     }
 
-    container module-sets {
+    list datastore {
+      key "name";
       description
-        "A container for the list of module-sets supported by the
-         server";
+        "A datastore supported by this server.
 
-      list module-set {
-        key "id";
+         Each datastore indicates which schema it supports.
+
+         The server MUST instantiate one entry in this list per
+         specific datastore it supports.
+
+         Each datstore entry with the same datastore schema SHOULD
+         reference the same schema.";
+
+      leaf name {
+        type identityref {
+          base ds:datastore;
+        }
         description
-          "An arbitrary module-set definition provided by the
-           server.
-
-           A module-set represents a datastore schema associated with
-           one or more datastores.
-
-           Module-sets being listed here does not necessarily mean
-           that they are used by any particular datastore.
-
-           In the case of a configuration datastore, only the config
-           true subset of a datastore schema is applicable to the
-           datastore, any config false schema nodes and any action
-           statements are ignored.";
-
-        leaf id {
-          type string;
-          description
-            "A system-generated value that uniquely represents the
-             referenced set of modules.  Any change to the number
-             of modules referenced, or to the modules themselves,
-             generates a different value.";
-        }
-        leaf-list module {
-          type leafref {
-            path "../../../modules/module/id";
-          }
-          description
-            "A module-instance supported by the server, including its
-             features and deviations.";
-        }
+          "The identity of the datastore.";
       }
-    }
+      leaf schema {
+        type leafref {
+          path "../../schema/name";
+        }
+        must '((derived-from(../name, "ds:conventional")'
+           + '   or ../name = "ds:operational")'
+           + '  and count(../../datastore['
+           + '        (derived-from(name,"ds:conventional")'
+           + '         or name = "ds:operational")'
+           + '        and schema != current()]) = 0)'
+           + ' or not (derived-from(../name, "ds:conventional")'
+           + '         or ../name = "ds:operational")' {
+          description
+            "All conventional datastores and the operational
+             datastore must refer to the same schema.";
+        }
+        mandatory true;
 
-    container datastores {
-      description
-        "A container for the list of datastores supported by the
-         server.";
-
-      list datastore {
-        key "name";
         description
-          "A datastore supported by this server.
-
-           Each datastore indicates which module-set it supports.
-
-           The server MUST instantiate one entry in this list per
-           specific datastore it supports.
-
-           Each datstore entry with the same datastore schema SHOULD
-           reference the same module-set.";
-
-        leaf name {
-          type identityref {
-            base ds:datastore;
-          }
-          description
-            "The identity of the datastore.";
-        }
-        leaf module-set {
-          type leafref {
-            path "../../../module-sets/module-set/id";
-          }
-          mandatory true;
-          description
-            "A reference to the module-set supported by this
-             datastore";
-        }
+          "A reference to the schema supported by this datastore";
       }
     }
   }
@@ -334,13 +361,12 @@ module ietf-yang-library {
 
     leaf checksum {
       type string;
-      config false;
       mandatory true;
       description
         "A server-generated checksum of the contents of the
          'yang-library' tree.  The server MUST change the value of
          this leaf if the information represented by the
-         'yang-library' tree, except yang-library/checksum, has
+         'yang-library' tree, except 'yang-library/checksum', has
          changed.";
     }
   }
@@ -389,6 +415,20 @@ module ietf-yang-library {
           "The YANG module or submodule revision date.
            A zero-length string is used if no revision statement
            is present in the YANG module or submodule.";
+      }
+    }
+    grouping schema-leaf {
+      status deprecated;
+      description
+        "Common schema leaf parameter for modules and submodules.";
+      leaf schema {
+        type inet:uri;
+        description
+          "Contains a URL that represents the YANG schema
+           resource for this module or submodule.
+
+           This leaf will only be present if there is a URL
+           available for retrieval of the schema for this entry.";
       }
     }
 
