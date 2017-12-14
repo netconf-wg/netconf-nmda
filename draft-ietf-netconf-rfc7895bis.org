@@ -78,15 +78,11 @@ The following terms are defined in ^RFC7950^:
 The following terms are defined in ^I-D.ietf-netmod-revised-datastores^:
 
 - conventional configuration datastore
-- operational datastore
+- operational state datastore
+- operational state
 - datastore schema
 - client
 - server
-
-The following terms are used within this document:
-
-- YANG library: A collection of metadata describing the server's
-operational state.
 
 ** Tree Diagrams
 
@@ -198,7 +194,7 @@ YANG version 1.1, but it supports the description of YANG modules
 written in any revision of YANG.
 
 All data nodes in "ietf-yang-library" are "config false", and thus
-accessible in the operational datastore.
+accessible in the operational state datastore.
 
 Following is the YANG Tree Diagram for the "ietf-yang-library" module,
 excluding the deprecated "modules-state" tree:
@@ -227,7 +223,7 @@ This list contains one entry for each schema in use by the server
 (e.g., presented by a datastore).
 
 All conventional configuration datastores and the operational
-datastore use the same "schema" entry.
+state datastore use the same "schema" entry.
 
 A dynamic configuration datastore may use a different datastore schema
 from the conventional configuration datastores, and hence may require
