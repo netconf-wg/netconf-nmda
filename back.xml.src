@@ -6,6 +6,8 @@
 
   ietf-ref:RFC3688
 
+  ietf-ref:RFC5246
+
   ietf-ref:RFC6020
 
   ietf-ref:RFC6241
@@ -16,9 +18,8 @@
 
   ietf-ref:RFC6536
 
-  ietf-ref:RFC7895
-
   ietf-ref:RFC7950
+
   ietf-ref:RFC8040
 
   ietf-ref:I-D.ietf-netmod-revised-datastores
@@ -30,6 +31,8 @@
   ietf-ref:RFC5277
 
   ietf-ref:RFC6470
+
+  ietf-ref:RFC7895
 
 </references>
 

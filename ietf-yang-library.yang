@@ -55,9 +55,9 @@ module ietf-yang-library {
   // and remove this note.
   // RFC Ed.: replace XXXX with actual RFC number and remove this
   // note.
-  revision 2017-11-29 {
+  revision 2017-12-14 {
     description
-      "Updated revision.";
+      "Added support for multiple datastores.";
     reference
       "RFC XXXX: YANG Library.";
   }
@@ -155,31 +155,31 @@ module ietf-yang-library {
     }
   }
 
-  grouping schema-parameters {
+  grouping module-set-parameters {
     description
-      "A set of parameters that describe a schema.";
+      "A set of parameters that describe a module set.";
 
     leaf name {
       type string;
       description
-        "An arbitrary name of the schema";
+        "An arbitrary name of the module set.";
     }
     leaf checksum {
       type string;
       config false;
       mandatory true;
       description
-        "A server-generated checksum of the contents of the schema.
-         The server MUST change the value of this leaf if the
-         information represented by the schema, except 'checksum',
-         has changed.";
+        "A server-generated checksum of the contents of the module
+         set.  The server MUST change the value of this leaf if the
+         information represented by the module set, except
+         'checksum', has changed.";
     }
     list module {
       key "name";
       description
-        "An entry in this list represents a module currently
-         supported by the server with a particular set of supported
-         features and deviations.
+        "An entry in this list represents a module implemented by the
+         server with a particular set of supported features and
+         deviations.
 
          The server implements one or more protocol-accessible
          objects defined in the YANG module identified in this entry.
@@ -263,43 +263,41 @@ module ietf-yang-library {
        so it can be reused in configuration or another monitoring
        data structure.";
 
-    list schema {
+    list module-set {
       key name;
+      description
+        "A set of modules that may be used by one or more schemas.";
+
+      uses module-set-parameters;
+    }
+
+    list schema {
+      key "name";
       description
         "A datastore schema that may be used by one or more
          datastores.";
 
-      uses schema-parameters {
-        augment module {
-          description
-            "Additional nodes for each module in the schema.";
-
-          leaf-list not-implemented-in {
-            type leafref {
-              path "../../../datastore/name";
-            }
-            description
-              "If the module is not supported in all datastores that
-               refer to this schema, this leaf list contains the
-               names of the datastores that don't support the
-               module.";
-          }
+      leaf name {
+        type string;
+        description
+          "An arbitrary name of the schema.";
+      }
+      leaf checksum {
+        type string;
+        config false;
+        mandatory true;
+        description
+          "A server-generated checksum of the contents of the schema.
+           The server MUST change the value of this leaf if the
+           information represented by the schema, except 'checksum',
+           has changed.";
+      }
+      leaf-list module-set {
+        type leafref {
+          path "../../module-set/name";
         }
-        augment module/feature {
-          description
-            "Additional nodes for each feature in the schema.";
-
-          leaf-list not-implemented-in {
-            type leafref {
-              path "../../../../datastore/name";
-            }
-            description
-              "If the feature is not supported in all datastores that
-               refer to this schema, this leaf list contains the
-               names of the datastores that don't support the
-               feature.";
-          }
-        }
+        description
+          "A set of module-sets that are included in this schema.";
       }
     }
 
@@ -327,22 +325,10 @@ module ietf-yang-library {
         type leafref {
           path "../../schema/name";
         }
-        must '((derived-from(../name, "ds:conventional")'
-           + '   or ../name = "ds:operational")'
-           + '  and count(../../datastore['
-           + '        (derived-from(name,"ds:conventional")'
-           + '         or name = "ds:operational")'
-           + '        and schema != current()]) = 0)'
-           + ' or not (derived-from(../name, "ds:conventional")'
-           + '         or ../name = "ds:operational")' {
-          description
-            "All conventional datastores and the operational
-             datastore must refer to the same schema.";
-        }
         mandatory true;
 
         description
-          "A reference to the schema supported by this datastore";
+          "A reference to the schema supported by this datastore.";
       }
     }
   }

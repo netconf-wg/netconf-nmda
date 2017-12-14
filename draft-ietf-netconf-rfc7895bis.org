@@ -63,18 +63,12 @@ all the YANG-modelled data available on the server:
 - modules: modules supported by the datastore, including any features
 and deviations.
 
-
 ** Terminology
 
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
 "OPTIONAL" in this document are to be interpreted as described in BCP
 14, ^RFC2119^.
-
-The following terms are defined in ^RFC6241^:
-
-- client
-- server
 
 The following terms are defined in ^RFC7950^:
 
@@ -86,6 +80,8 @@ The following terms are defined in ^I-D.ietf-netmod-revised-datastores^:
 - conventional configuration datastore
 - operational datastore
 - datastore schema
+- client
+- server
 
 The following terms are used within this document:
 
@@ -111,10 +107,11 @@ marked with a colon (":").
 
 RFC Ed.: delete this section, including this note, at time of publication.
 
-All NETCONF servers supporting YANG 1.1 ^RFC7950^ MUST support YANG Library
-(see Section 5.6.4 of RFC 7950).  Similarly, all RESTCONF servers MUST
-support YANG Library (see Section 10 of RFC 8040).  These requirements
-are independent of if the server supports NMDA or not.
+All NETCONF servers supporting YANG 1.1 ^RFC7950^ are required support
+YANG Library (see Section 5.6.4 of RFC 7950).  Similarly, all RESTCONF
+servers are required support YANG Library (see Section 10 of RFC
+8040).  These requirements are independent of if the server supports
+NMDA or not.
 
 RFC 7895 has a mandatory to implement "modules-state" tree that a server
 uses to advertise all the modules it supports.  However, this module was
@@ -134,6 +131,33 @@ populate "modules-state" in a backwards-compatible manner.  The new
 "yang-library" node would be ignored by legacy clients, while providing
 all the data needed for NMDA-aware clients, which would themselves ignore
 the "modules-state" tree.
+
+
+Design objectives:
+
++ As efficient as possible for a client to consume.
+Since the size of the yang library can be quite large, it should
+be possible for clients to cache the yang library information.
+
++ A dynamic configuration datastore must be able to implement a module
+or feature that is not implemented in the conventional datastores.
+
++ It must be possible to NOT implement a module or feature in
+<operational>, even if it is implemented in some other datastore.
+This is required for transition purposes; a server that wants to
+implement <operational> should not have to implement all modules at
+once.
+
++ A given module can only be implemented in one revision in all
+datastores.  If a module is implemented in more than one
+datastores, the same revision is implemented in all these
+datastores.
+
++ Multiple revisions can be used for import, if import-by revision
+is used.
+
++ Nice to have: make it possible to be used by schema mount
+
 
 The solution presented in this document is further motivated
 by the following desires:
@@ -173,6 +197,9 @@ and datastores supported by a server.  This module is defined using
 YANG version 1.1, but it supports the description of YANG modules
 written in any revision of YANG.
 
+All data nodes in "ietf-yang-library" are "config false", and thus
+accessible in the operational datastore.
+
 Following is the YANG Tree Diagram for the "ietf-yang-library" module,
 excluding the deprecated "modules-state" tree:
 
@@ -181,6 +208,15 @@ excluding the deprecated "modules-state" tree:
 ** yang-library
 
 This container holds all of the server's metadata.
+
+*** yang-library/checksum
+
+*** yang-library/datastore
+
+This list contains one entry for each datastore supported by the
+server, and identifies the datastore schema associated with a
+datastore via a reference to an entry in the "schema" list.  Each
+supported conventional configuration datastore has a separate entry.
 
 *** yang-library/schema
 
@@ -197,52 +233,15 @@ A dynamic configuration datastore may use a different datastore schema
 from the conventional configuration datastores, and hence may require
 a separate "schema" entry.
 
-*** yang-library/schema/module
+A schema has a leaf-list with references to entries in the
+"module-set" list.  The schema consists of the sum of all modules in
+all referenced module sets.
 
-This list contains one entry for each unique instance
-of a module in use by the server.  Each entry is distinguished
-by the module's name, revisions, features, and deviations.
+*** yang-library/module-set
 
-A server cannot implement different revisions of the same module in
-different datastores, so there MUST only be a single revision of a
-given module in the "module" list that has a "conformance-type" leaf of
-"implement".
+*** yang-library/module-set/module
 
-Although the server is at liberty to choose the unique "id" for each
-entry in the "module" list, it is suggested to use an "id" that would
-be meaningful to clients.  For example, "ietf-interfaces@2017-08-17"
-could be used as the "id" for a particular revision of the IETF
-interfaces YANG module.  For a module that holds deviations or
-features specific to a datastore perhaps an "id" that also contains
-the datastore name, like
-"ietf-interfaces-deviations@2017-08-17/operational" could be used.
-
-*** yang-library/schema/module/
-
-The datastore schema for the operational datastore is the superset of
-the datastore schema of all the configuration datastores, but can have
-unsupported nodes removed via datastore specific deviations or by
-omitting one or more modules from the module set associated with the
-operational datastore.
-
-However, where possible, the same module set used for conventional
-configuration datatstores should also be used for the operational
-datastore.  For example, deviations that are specific to "config
-false" nodes could still be applied to a common module instance that
-is also included in the module set used for the conventional
-datastores.
-
-Although the server is at liberty to choose the unique "id" for the
-"module-set" list entry, it is suggested to choose an "id" that would be
-meaningful to clients, perhaps including the datastore name if the
-module set is only relevant to a single datastore.
-
-*** yang-library/datastore
-
-This list contains one entry for each datastore supported by the
-server, and identifies the datastore schema associated with a
-datastore via a reference to an entry in the "schema" list.  Each
-supported conventional configuration datastore has a separate entry.
+*** yang-library/module-set/import-only-module
 
 ** YANG Library Module @library-module@
 
@@ -284,19 +283,23 @@ This document takes over this registration entry made by RFC 7895.
 
 * Security Considerations
 
-The YANG module defined in this memo is designed to be accessed
-via the NETCONF protocol ^RFC6241^.  The lowest NETCONF layer is
-the secure transport layer and the mandatory-to-implement secure
-transport is SSH ^RFC6242^.  The NETCONF access control model
-^RFC6536^ provides the means to restrict access for particular
-NETCONF users to a pre-configured subset of all available NETCONF
-protocol operations and content.
+The YANG module defined in this document is designed to be accessed
+via network management protocols such as NETCONF ^RFC6241^ or RESTCONF
+^RFC8040^. The lowest NETCONF layer is the secure transport layer, and
+the mandatory-to-implement secure transport is Secure Shell (SSH)
+^RFC6242^. The lowest RESTCONF layer is HTTPS, and the
+mandatory-to-implement secure transport is TLS ^RFC5246^.
 
-Some of the readable data nodes in this YANG module may be
-considered sensitive or vulnerable in some network environments.
-It is thus important to control read access (e.g., via get,
-get-config, or notification) to these data nodes.  These are the
-subtrees and data nodes and their sensitivity/vulnerability:
+The NETCONF access control model ^RFC6536^ provides the means to
+restrict access for particular NETCONF or RESTCONF users to a
+preconfigured subset of all available NETCONF or RESTCONF protocol
+operations and content.
+
+Some of the readable data nodes in this YANG module may be considered
+sensitive or vulnerable in some network environments.  It is thus
+important to control read access (e.g., via get, get-config, or
+notification) to these data nodes.  These are the subtrees and data
+nodes and their sensitivity/vulnerability:
 
 - /modules-state/module: The module list used in a server
 implementation may help an attacker identify the server capabilities
