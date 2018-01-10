@@ -47,6 +47,7 @@ endif
 
 current_ver := $(shell git tag | grep '${output_base}-[0-9][0-9]' | tail -1 | sed -e"s/.*-//")
 ifeq "${current_ver}" ""
+# please use `git tag ...; git push --tags` instead
 next_ver ?= 02
 else
 next_ver ?= $(shell printf "%.2d" $$((1$(current_ver)-99)))
