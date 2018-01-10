@@ -1,0 +1,20 @@
+{{references:
+    title "Normative References";
+    ietf-ref RFC2119;
+    ietf-ref RFC3688;
+    ietf-ref RFC6020;
+    ietf-ref RFC6241;
+    ietf-ref RFC6242;
+    ietf-ref RFC6243;
+    ietf-ref RFC6991;
+    ietf-ref RFC7950;
+    ietf-ref RFC8174;
+    ietf-ref I-D.ietf-netmod-revised-datastores;
+    ietf-ref I-D.ietf-netconf-rfc7895bis;
+    ietf-ref I-D.ietf-netconf-rfc6536bis;
+}}
+
+{{references:
+    title "Informative References";
+    ietf-ref I-D.ietf-netmod-yang-tree-diagrams;
+}}

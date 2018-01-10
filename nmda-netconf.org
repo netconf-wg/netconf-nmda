@@ -1,0 +1,271 @@
+#
+# NMDA Changes for NETCONF
+#
+
+The Network Management Datastore Architecture defines datastores as a
+fundamental concept binding the data models written in the YANG data
+modeling language to network management protocols.  This document
+extends the NETCONF protocol, defined in RFC 6241, in order to support
+the Network Management Datastore Architecture. This document updates
+RFC 6241 by defining the new operations <get-data> and <edit-data>
+that replace the <get>, <get-config> and <edit-config> operations on
+systems implementing the Network Management Datastore Architecture.
+This document also updates RFC 7950 by requiring the usage of
+^I-D.ietf-netconf-rfc7895bis^ by NETCONF servers implementing the
+Network Management Datastore Architecture.
+
+* Introduction
+
+This document extends the NETCONF protocol defined in ^RFC6241^ in
+order to support the Network Management Datastore Architecture (NMDA)
+defined in ^I-D.ietf-netmod-revised-datastores^.
+
+NETCONF operations defined in ^RFC6241^ refer to the datastores
+defined in the original datstore model. Two new NETCONF operations
+<get-data> and <edit-data> are introduced to allow references to the
+new datastores defined in ^I-D.ietf-netmod-revised-datastores^. Other
+existing NETCONF operations like <copy-config>, <lock> and <unlock>
+are augmented to allow them to target additional datastores.
+
+For systems implementing the Network Management Datastore
+Architecture, the new <get-data> operation replaces the <get> and
+<get-config> operations and the new <edit-data> operation replaces the
+<edit-config> operation.
+
+** Terminology
+
+This document uses the terminology defined by the NMDA
+^I-D.ietf-netmod-revised-datastores^.
+
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+"OPTIONAL" in this document are to be interpreted as described in BCP
+14, ^RFC2119^ ^RFC8174^ when, and only when, they appear in all capitals,
+as shown here.
+
+** Tree Diagrams
+
+Tree diagrams used in this document follow the notation defined in
+^I-D.ietf-netmod-yang-tree-diagrams^.
+* Datastore and YANG Library Requirements
+
+RFC Ed.: Update 201X-XX-XX below with correct date.
+
+An NMDA-compliant NETCONF server MUST support the operational state
+datastore and it MUST implement at least revision 201X-XX-XX of the
+"ietf-yang-library" module defined in ^I-D.ietf-netconf-rfc7895bis^.
+
+The server MUST advertise the
+following capability in the <hello> message (line breaks and
+whitespaces are used for formatting reasons only):
+
+  urn:ietf:params:netconf:capability:yang-library:1.1?
+    revision=<date>&checksum=<checksum-value>
+
+The parameter "revision" has the same value as the revision date of
+the "ietf-yang-library" module implemented by the server.  This
+parameter MUST be present.
+
+The parameter "checksum" has the same value as the leaf
+"/yang-library/checksum" from "ietf-yang-library".  This
+parameter MUST be present.
+
+With this mechanism, a client can cache the supported modules for a
+server and only update the cache if the "checksum" value in the
+<hello> message changes.
+
+This document updates ^RFC7950^, section 5.6.4, to allow servers to
+advertise the capability :yang-library:1.1 instead of
+:yang-library:1.0, and to implement the subtree "/yang-library"
+^I-D.ietf-netconf-rfc7895bis^ instead of "/modules-state".
+
+* NETCONF Support for NMDA
+
+This section describes the NETCONF changes needed to support NMDA.
+These changes are defined in a new YANG (^RFC7950^) module
+"ietf-netconf-datastores".
+
+These changes include the use of source and target parameters based on
+the "datastore" identity defined in the "ietf-datastores" module
+^I-D.ietf-netmod-revised-datastores^.  The use of identities allows
+future expansion in a way that the choice-based strategy from the
+original operations (e.g., <get-config>, <edit-config>) do not.
+
+** New NETCONF Operations
+
+Two new operations <get-data> and <edit-data> are defined in this
+document in order to support NMDA. These operations are similar
+to the <get-config> and <edit-config> operations but they can work
+on an extensible set of datastores.
+
+*** The <get-data> Operation
+
+The <get-data> operation retrieves data from a specific NMDA
+datastore.  This operation is similar to NETCONF's <get-config>
+operation defined in ^RFC6241^, but it adds the flexibility to
+select the source datastore.
+
+!! include-figure get-data.tree
+
+The "datastore" parameter indicates the datastore which is the source
+of the data to be retrieved.  This is a datastore identity.
+
+The <get-data> operation accepts a content filter parameter, similar
+to the "filter" parameter of <get-config>, but using explicit nodes
+for subtree filtering ("subtree-filter") and XPath filtering
+("xpath-filter").
+
+The "config-filter" parameter can be used to retrieve only "config
+true" or "config false" nodes. The "origin-filter" can be used to
+select nodes matching a given "origin" value.
+
+The "max-depth" parameter can be used by the client to limit the
+number of sub-tree levels that are returned in the reply.
+
+The <get-data> operation also supports the "with-defaults" parameter
+as defined in ^RFC6243^.  The supported values follow the constraints
+given by the "with-defaults" capability.
+
+The "with-defaults" parameter does not apply when interacting with an
+operational datastore. This means that all values are always returned
+from the operational state datastore, even if a node happens to have a
+default statement in the YANG module, and this default value is being
+used by the server. If the "with-defaults" parameter is present in a
+request to such a datastore, then the server MUST return an
+<rpc-error> element with an <error-tag> value of "invalid-value".
+
+**** Origin Metadata Attribute
+
+The <get-data> operation adds a new parameter named "with-origin",
+which if present, requests that the server includes "origin" metadata
+anotations in its response, as detailed in the NMDA.  This parameter
+is only valid for the operational state datastore and any datastores
+with identities derived from the "operational" identity.  Otherwise,
+if an invalid datastore is specified then an <rpc-error> element is
+returned with an <error-tag> value of "invalid-value".  "origin"
+metadata annotations are not included unless a client explicitly
+requests them.
+
+Data in the operational state datastore can come from multiple
+sources.  The server should return the most accurate value for the
+"origin" metadata annotation as possible, indicating the source of the
+operational value, as specified in section 5.3.4 of
+^I-D.ietf-netmod-revised-datastores^.
+
+When encoding the origin metadata annotation for a hierarchy of
+returned nodes, the annotation may be omitted for a child node when
+the value matches that of the parent node, as described in the
+"ietf-origin" YANG module ^I-D.ietf-netmod-revised-datastores^.
+
+The "with-origin" parameter is optional to support.  It is identified
+with the URI:
+
+  urn:ietf:params:netconf:capability:with-origin:1.0
+
+*** The <edit-data> Operation
+
+The <edit-data> operation changes the contents of a writable
+datastore, similar to the <edit-config> operation defined in
+^RFC6241^, but with additional flexibility in naming the target
+datastore. If an <edit-data> operation is invoked on a non-writable
+datastore, then an error is returned, as specified in
+"ietf-netconf-datastores" (see ^yangmod^).
+
+!! include-figure edit-data.tree
+
+The "datastore" parameter is a datastore identity that indicates the
+desired target datastore where changes should be made.
+
+The "default-operation" parameter is a copy of the "default-operation"
+parameter of the <edit-config> operation.
+
+The "edit-content" choice mirrors the "edit-content" choice of the
+<edit-config> operation. Note, however, that the "config" element in
+the "edit-content" choice of <edit-data> uses "anydata" (introduced in
+YANG 1.1) while the "config" element in the "edit-content" choice of
+<edit-config> used "anyxml".
+
+The <edit-data> operation does not support the "error-option" and the
+"test-option" parameters that were part of the <edit-config>
+operation.
+
+** Augmentations to NETCONF Operations
+
+Several of the operations defined in the base NETCONF YANG module
+^RFC6241^ may to be used for new datastores.  Hence, the <lock>,
+<unlock>, and <validate> operations are augmented with a new
+"datastore" leaf that can select the desired datastore.  If a <lock>,
+<unlock>, or <validate> operation is not supported on a particular
+datastore then an error is returned, as specified in
+"ietf-netconf-datastores" (see ^yangmod^).
+
+* NETCONF Datastores YANG Module @yangmod@
+This module imports definitions from ^RFC6991^, ^RFC6241^, ^RFC6243',
+and ^I-D.ietf-netmod-revised-datastores^.
+
+RFC Ed.: update the date below with the date of RFC publication and
+remove this note.
+
+!! include-figure ietf-netconf-datastores.yang extract-to="ietf-netconf-datastores@2018-01-10.yang"
+
+* IANA Considerations
+
+This document registers two capability identifier URNs in the "Network
+Configuration Protocol (NETCONF) Capability URNs" registry:
+
+  Index           Capability Identifier
+  -------------   ---------------------------------------------------
+  :yang-library   urn:ietf:params:netconf:capability:yang-library:1.1
+  :with-origin    urn:ietf:params:netconf:capability:with-origin:1.0
+
+This document registers a URI in the "IETF XML Registry" ^RFC3688^.
+Following the format in RFC 3688, the following registration has been
+made.
+
+    URI: urn:ietf:params:xml:ns:yang:ietf-netconf-datastores
+
+    Registrant Contact: The IESG.
+
+    XML: N/A, the requested URI is an XML namespace.
+
+This document registers a YANG module in the "YANG Module Names"
+registry ^RFC6020^.
+
+  name:         ietf-netconf-datastores
+  namespace:    urn:ietf:params:xml:ns:yang:ietf-netconf-datastores
+  prefix:       ncds
+  reference:    RFC XXXX
+
+* Security Considerations
+
+The YANG module defined in this document extends the base operations
+of the NETCONF ^RFC6241^ protocol. The lowest NETCONF layer is the
+secure transport layer and the mandatory-to-implement secure transport
+is Secure Shell (SSH) ^RFC6242^.
+
+The network configuration access control model
+^I-D.ietf-netconf-rfc6536bis^ provides the means to restrict access
+for particular NETCONF users to a preconfigured subset of all
+available NETCONF protocol operations and content.
+
+The security considerations for the base NETCONF protocol operations
+(see Section 9 of ^RFC6241^) apply to the new NETCONF <get-data> and
+<edit-data> operations defined in this document.
+
+# *! start-appendix
+#
+# * Examples
+
+{{document:
+    name ;
+    ipr trust200902;
+    category std;
+    references references.xml;
+    updates 6241, 7950;
+    title "NETCONF Extensions to Support the Network Management Datastore Architecture";
+    contributor "author:Martin Bjorklund:Tail-f Systems:mbj@tail-f.com";
+    contributor "author:Juergen Schoenwaelder:Jacobs University:j.schoenwaelder@jacobs-university.de";
+    contributor "author:Phil Shafer:Juniper Networks:phil@juniper.net";
+    contributor "author:Kent Watsen:Juniper Networks:kwatsen@juniper.net";
+    contributor "author:Robert Wilton:Cisco Systems:rwilton@cisco.com";
+}}
