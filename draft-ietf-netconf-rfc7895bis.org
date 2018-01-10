@@ -103,9 +103,9 @@ marked with a colon (":").
 
 RFC Ed.: delete this section, including this note, at time of publication.
 
-All NETCONF servers supporting YANG 1.1 ^RFC7950^ are required support
+All NETCONF servers supporting YANG 1.1 ^RFC7950^ are required to support
 YANG Library (see Section 5.6.4 of RFC 7950).  Similarly, all RESTCONF
-servers are required support YANG Library (see Section 10 of RFC
+servers are required to support YANG Library (see Section 10 of RFC
 8040).  These requirements are independent of if the server supports
 NMDA or not.
 
