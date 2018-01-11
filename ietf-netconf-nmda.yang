@@ -1,6 +1,6 @@
-module ietf-netconf-datastores {
+module ietf-netconf-nmda {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-netconf-datastores";
+  namespace "urn:ietf:params:xml:ns:yang:ietf-netconf-nmda";
   prefix ncds;
 
   import ietf-yang-types {
@@ -61,7 +61,7 @@ module ietf-netconf-datastores {
      (http://www.rfc-editor.org/info/rfcxxxx); see the RFC itself
      for full legal notices.";
 
-  revision 2018-01-10 {
+  revision 2018-01-11 {
     description
       "Initial revision.";
     reference

@@ -6,7 +6,7 @@ draft = nmda-netconf.org
 output_base = draft-ietf-netconf-nmda-netconf
 examples =
 trees = get-data.tree edit-data.tree
-std_yang = ietf-netconf-datastores.yang
+std_yang = ietf-netconf-nmda.yang
 ex_yang =
 references_src = references.txt
 references_xml = references.xml
@@ -102,12 +102,12 @@ ${output}.txt: ${output}.xml
 	${XML2RFC} $< -o $@ --text
 
 .INTERMEDIATE: $(trees)
-get-data.tree: ietf-netconf-datastores.yang
+get-data.tree: ietf-netconf-nmda.yang
 	${PYANG} ${PYANGFLAGS} -f tree --tree-line-length 68 \
 	  --tree-path /get-data $< | awk '/rpcs/ { s=1; next;} \
 	  s==0 { next; } {print}' > $@
 
-edit-data.tree: ietf-netconf-datastores.yang
+edit-data.tree: ietf-netconf-nmda.yang
 	${PYANG} ${PYANGFLAGS} -f tree --tree-line-length 68 \
 	  --tree-path /edit-data $< | awk '/rpcs/ { s=1; next;} \
 	  s==0 { next; } {print}' > $@

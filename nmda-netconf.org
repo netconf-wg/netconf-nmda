@@ -84,7 +84,7 @@ advertise the capability :yang-library:1.1 instead of
 
 This section describes the NETCONF changes needed to support NMDA.
 These changes are defined in a new YANG (^RFC7950^) module
-"ietf-netconf-datastores".
+"ietf-netconf-nmda".
 
 These changes include the use of source and target parameters based on
 the "datastore" identity defined in the "ietf-datastores" module
@@ -170,7 +170,7 @@ datastore, similar to the <edit-config> operation defined in
 ^RFC6241^, but with additional flexibility in naming the target
 datastore. If an <edit-data> operation is invoked on a non-writable
 datastore, then an error is returned, as specified in
-"ietf-netconf-datastores" (see ^yangmod^).
+"ietf-netconf-nmda" (see ^yangmod^).
 
 !! include-figure edit-data.tree
 
@@ -198,16 +198,17 @@ Several of the operations defined in the base NETCONF YANG module
 "datastore" leaf that can select the desired datastore.  If a <lock>,
 <unlock>, or <validate> operation is not supported on a particular
 datastore then an error is returned, as specified in
-"ietf-netconf-datastores" (see ^yangmod^).
+"ietf-netconf-nmda" (see ^yangmod^).
 
 * NETCONF Datastores YANG Module @yangmod@
+
 This module imports definitions from ^RFC6991^, ^RFC6241^, ^RFC6243',
 and ^I-D.ietf-netmod-revised-datastores^.
 
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
 
-!! include-figure ietf-netconf-datastores.yang extract-to="ietf-netconf-datastores@2018-01-10.yang"
+!! include-figure ietf-netconf-nmda.yang extract-to="ietf-netconf-nmda@2018-01-11.yang"
 
 * IANA Considerations
 
@@ -223,7 +224,7 @@ This document registers a URI in the "IETF XML Registry" ^RFC3688^.
 Following the format in RFC 3688, the following registration has been
 made.
 
-    URI: urn:ietf:params:xml:ns:yang:ietf-netconf-datastores
+    URI: urn:ietf:params:xml:ns:yang:ietf-netconf-nmda
 
     Registrant Contact: The IESG.
 
@@ -232,8 +233,8 @@ made.
 This document registers a YANG module in the "YANG Module Names"
 registry ^RFC6020^.
 
-  name:         ietf-netconf-datastores
-  namespace:    urn:ietf:params:xml:ns:yang:ietf-netconf-datastores
+  name:         ietf-netconf-nmda
+  namespace:    urn:ietf:params:xml:ns:yang:ietf-netconf-nmda
   prefix:       ncds
   reference:    RFC XXXX
 
