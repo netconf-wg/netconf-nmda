@@ -10,7 +10,8 @@ This document updates both RFC 6241 and RFC 7950.  The update to
 RFC 6241 adds new operations <get-data> and <edit-data>, and
 augments existing operations <lock>, <unlock>, and <validate>.  
 The update to RFC 7950 requires the usage of I-D.ietf-netconf-rfc7895bis
-by NETCONF servers implementing the NMDA.
+by NETCONF servers implementing the Network Management Datastore
+Architecture.
 
 REF Editor: please replace "I-D.ietf-netmod-revised-datastores" and
 "I-D.ietf-netconf-rfc7895bis" above with theie final RFC assignments.
