@@ -2,17 +2,18 @@
 # NMDA Changes for NETCONF
 #
 
-The Network Management Datastore Architecture defines datastores as a
-fundamental concept binding the data models written in the YANG data
-modeling language to network management protocols.  This document
-extends the NETCONF protocol, defined in RFC 6241, in order to support
-the Network Management Datastore Architecture. This document updates
-RFC 6241 by defining the new operations <get-data> and <edit-data>
-that replace the <get>, <get-config> and <edit-config> operations on
-systems implementing the Network Management Datastore Architecture.
-This document also updates RFC 7950 by requiring the usage of
-^I-D.ietf-netconf-rfc7895bis^ by NETCONF servers implementing the
-Network Management Datastore Architecture.
+This document extends the NETCONF protocol defined in RFC 6241 in
+order to support the Network Management Datastore Architecture 
+defined in I-D.ietf-netmod-revised-datastores.
+
+This document updates both RFC 6241 and RFC 7950.  The update to
+RFC 6241 adds new operations <get-data> and <edit-data>, and
+augments existing operations <lock>, <unlock>, and <validate>.  
+The update to RFC 7950 requires the usage of I-D.ietf-netconf-rfc7895bis
+by NETCONF servers implementing the NMDA.
+
+REF Editor: please replace "I-D.ietf-netmod-revised-datastores" and
+"I-D.ietf-netconf-rfc7895bis" above with theie final RFC assignments.
 
 * Introduction
 
@@ -20,17 +21,16 @@ This document extends the NETCONF protocol defined in ^RFC6241^ in
 order to support the Network Management Datastore Architecture (NMDA)
 defined in ^I-D.ietf-netmod-revised-datastores^.
 
-NETCONF operations defined in ^RFC6241^ refer to the datastores
-defined in the original datstore model. Two new NETCONF operations
-<get-data> and <edit-data> are introduced to allow references to the
-new datastores defined in ^I-D.ietf-netmod-revised-datastores^. Other
-existing NETCONF operations like <copy-config>, <lock> and <unlock>
-are augmented to allow them to target additional datastores.
+This document updates ^RFC6241^ in order to enable NETCONF clients
+to interact with all the datastores supported by the NMDA.  The 
+update both adds new operations <get-data> and <edit-data>, and
+augments existing operations <lock>, <unlock>, and <validate>.  
 
-For systems implementing the Network Management Datastore
-Architecture, the new <get-data> operation replaces the <get> and
-<get-config> operations and the new <edit-data> operation replaces the
-<edit-config> operation.
+This document also updates ^RFC7950^ in order to enable NETCONF
+clients to both discover which datastores are supported by the
+NETCONF server, as well as determine which modules are supported
+in each datastore.  The update requires NETCONF servers implementing
+the NMDA to support ^I-D.ietf-netconf-rfc7895bis^.
 
 ** Terminology
 
