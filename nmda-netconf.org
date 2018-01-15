@@ -3,12 +3,12 @@
 #
 
 This document extends the NETCONF protocol defined in RFC 6241 in
-order to support the Network Management Datastore Architecture 
+order to support the Network Management Datastore Architecture
 defined in I-D.ietf-netmod-revised-datastores.
 
 This document updates both RFC 6241 and RFC 7950.  The update to
 RFC 6241 adds new operations <get-data> and <edit-data>, and
-augments existing operations <lock>, <unlock>, and <validate>.  
+augments existing operations <lock>, <unlock>, and <validate>.
 The update to RFC 7950 requires the usage of I-D.ietf-netconf-rfc7895bis
 by NETCONF servers implementing the Network Management Datastore
 Architecture.
@@ -23,9 +23,9 @@ order to support the Network Management Datastore Architecture (NMDA)
 defined in ^I-D.ietf-netmod-revised-datastores^.
 
 This document updates ^RFC6241^ in order to enable NETCONF clients
-to interact with all the datastores supported by the NMDA.  The 
+to interact with all the datastores supported by the NMDA.  The
 update both adds new operations <get-data> and <edit-data>, and
-augments existing operations <lock>, <unlock>, and <validate>.  
+augments existing operations <lock>, <unlock>, and <validate>.
 
 This document also updates ^RFC7950^ in order to enable NETCONF
 clients to both discover which datastores are supported by the
@@ -80,9 +80,9 @@ advertise the capability :yang-library:1.1 instead of
 :yang-library:1.0, and to implement the subtree "/yang-library"
 ^I-D.ietf-netconf-rfc7895bis^ instead of "/modules-state".
 
-* NETCONF Support for NMDA
+* NETCONF Support for the NMDA
 
-This section describes the NETCONF changes needed to support NMDA.
+This section describes the NETCONF changes needed to support the NMDA.
 These changes are defined in a new YANG (^RFC7950^) module
 "ietf-netconf-nmda".
 
@@ -90,12 +90,12 @@ These changes include the use of source and target parameters based on
 the "datastore" identity defined in the "ietf-datastores" module
 ^I-D.ietf-netmod-revised-datastores^.  The use of identities allows
 future expansion in a way that the choice-based strategy from the
-original operations (e.g., <get-config>, <edit-config>) do not.
+original operations (e.g., <get-config>, <edit-config>) does not.
 
 ** New NETCONF Operations
 
 Two new operations <get-data> and <edit-data> are defined in this
-document in order to support NMDA. These operations are similar
+document in order to support the NMDA. These operations are similar
 to the <get-config> and <edit-config> operations but they can work
 on an extensible set of datastores.
 
@@ -137,7 +137,7 @@ request to such a datastore, then the server MUST return an
 
 **** Origin Metadata Attribute
 
-The <get-data> operation adds a new parameter named "with-origin",
+The <get-data> operation defines a parameter named "with-origin",
 which if present, requests that the server includes "origin" metadata
 anotations in its response, as detailed in the NMDA.  This parameter
 is only valid for the operational state datastore and any datastores
