@@ -39,6 +39,7 @@ XML2RFC ?= xml2rfc
 OXTRADOC ?= oxtradoc
 IDNITS ?= idnits
 PYANG ?= pyang
+PYANGFLAGS ?= -p ../../netmod-wg/datastore-dt
 
 ifeq (,$(draft))
 $(warning No file named draft-*.md or draft-*.xml or draft-*.org)
