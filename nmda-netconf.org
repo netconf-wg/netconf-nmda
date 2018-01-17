@@ -129,12 +129,13 @@ as defined in ^RFC6243^.  The supported values follow the constraints
 given by the "with-defaults" capability.
 
 The "with-defaults" parameter does not apply when interacting with an
-operational datastore. This means that all values are always returned
-from the operational state datastore, even if a node happens to have a
+operational datastore. This means that all "in use" values, as defined
+in ^I-D.ietf-netmod-revised-datastores^ section 5.3, are returned from
+the operational state datastore, even if a node happens to have a
 default statement in the YANG module, and this default value is being
 used by the server. If the "with-defaults" parameter is present in a
-request to such a datastore, then the server MUST return an error,
-as specified in "ietf-netconf-nmda" (see ^yangmod^).
+request to such a datastore, then the server MUST return an error, as
+specified in "ietf-netconf-nmda" (see ^yangmod^).
 
 **** Origin Metadata Attribute
 
