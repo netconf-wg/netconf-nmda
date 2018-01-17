@@ -86,18 +86,8 @@ The following terms are defined in ^I-D.ietf-netmod-revised-datastores^:
 
 ** Tree Diagrams
 
-A simplified graphical representation of the data model is used in
-this document.  The meaning of the symbols in these
-diagrams is as follows:
-
-- Brackets "[" and "]" enclose list keys.
-- Abbreviations before data node names: "rw" means configuration
- data (read-write) and "ro" state data (read-only).
-- Symbols after data node names: "?" means an optional node, "!" means
- a presence container, and "*" denotes a list and leaf-list.
-- Parentheses enclose choice and case nodes, and case nodes are also
-marked with a colon (":").
-- Ellipsis ("...") stands for contents of subtrees that are not shown.
+Tree diagrams used in this document follow the notation defined in
+^I-D.ietf-netmod-yang-tree-diagrams^.
 
 ** Motivation for rfc7895bis
 
@@ -207,6 +197,25 @@ This container holds all of the server's metadata.
 
 *** yang-library/checksum
 
+This mandatory leaf contains a unique implementation-specific
+identifier representing the current information in the YANG library on
+a specific server.  The value of this leaf MUST change whenever the
+the information in the YANG library changes.  There is no requirement
+that the same information always results in the same "checksum" value.
+
+This leaf allows a client to fetch all schema information once, cache it,
+and only refetch it if the value of this leaf has been changed.
+
+If the value of this leaf changes, the server also generates a
+"yang-library-update" notification.
+
+Note that for a NETCONF server that implements YANG 1.1 ^RFC7950^, a
+change of the "checksum" value results in a new value for the
+:yang-library capability defined in ^RFC7950^.  Thus, if such a server
+implements NETCONF notifications ^RFC5277^, and the notification
+"netconf-capability-change" ^RFC6470^, a "netconf-capability-change"
+notification is generated whenever the "checksum" changes.
+
 *** yang-library/datastore
 
 This list contains one entry for each datastore supported by the
@@ -251,7 +260,7 @@ are used by this module for some type definitions.
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
 
-!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2017-11-29.yang"
+!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2018-01-17.yang"
 
 * IANA Considerations @iana@
 
@@ -297,7 +306,7 @@ important to control read access (e.g., via get, get-config, or
 notification) to these data nodes.  These are the subtrees and data
 nodes and their sensitivity/vulnerability:
 
-- /modules-state/module: The module list used in a server
+- /yang-library/schema: The schema list used in a server
 implementation may help an attacker identify the server capabilities
 and server implementations with known bugs.
 Although some of this information may
@@ -336,5 +345,7 @@ The Space & Terrestrial Communications Directorate (S&TCD).
     abbreviation "YANG Library";
     contributor "author:Andy Bierman:YumaWorks:andy@yumaworks.com";
     contributor "author:Martin Bjorklund:Tail-f Systems:mbj@tail-f.com";
+    contributor "author:Juergen Schoenwaelder:Jacobs University:j.schoenwaelder@jacobs-university.de";
     contributor "author:Kent Watsen:Juniper Networks:kwatsen@juniper.net";
+    contributor "author:Robert Wilton:Cisco Systems:rwilton@cisco.com";
 }}
