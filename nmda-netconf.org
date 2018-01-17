@@ -14,13 +14,14 @@ by NETCONF servers implementing the Network Management Datastore
 Architecture.
 
 REF Editor: please replace "I-D.ietf-netmod-revised-datastores" and
-"I-D.ietf-netconf-rfc7895bis" above with theie final RFC assignments.
+"I-D.ietf-netconf-rfc7895bis" above with their final RFC assignments.
 
 * Introduction
 
 This document extends the NETCONF protocol defined in ^RFC6241^ in
-order to support the Network Management Datastore Architecture (NMDA)
-defined in ^I-D.ietf-netmod-revised-datastores^.
+order to support by a server implementing the Network Management
+Datastore Architecture (NMDA) defined in
+^I-D.ietf-netmod-revised-datastores^.
 
 This document updates ^RFC6241^ in order to enable NETCONF clients
 to interact with all the datastores supported by the NMDA.  The
@@ -75,15 +76,15 @@ With this mechanism, a client can cache the supported modules for a
 server and only update the cache if the "checksum" value in the
 <hello> message changes.
 
-This document updates ^RFC7950^, section 5.6.4, to allow servers to
+This document updates ^RFC7950^, Section 5.6.4, to allow servers to
 advertise the capability :yang-library:1.1 instead of
 :yang-library:1.0, and to implement the subtree "/yang-library"
 ^I-D.ietf-netconf-rfc7895bis^ instead of "/modules-state".
 
-* NETCONF Support for the NMDA
+* NETCONF Extensions
 
-This section describes the NETCONF changes needed to support the NMDA.
-These changes are defined in a new YANG (^RFC7950^) module
+This section describes the NETCONF extensions needed to support the
+NMDA.  These changes are defined in a new YANG (^RFC7950^) module
 "ietf-netconf-nmda".
 
 These changes include the use of source and target parameters based on
@@ -132,8 +133,8 @@ operational datastore. This means that all values are always returned
 from the operational state datastore, even if a node happens to have a
 default statement in the YANG module, and this default value is being
 used by the server. If the "with-defaults" parameter is present in a
-request to such a datastore, then the server MUST return an
-<rpc-error> element with an <error-tag> value of "invalid-value".
+request to such a datastore, then the server MUST return an error,
+as specified in "ietf-netconf-nmda" (see ^yangmod^).
 
 **** Origin Metadata Attribute
 
@@ -142,15 +143,15 @@ which if present, requests that the server includes "origin" metadata
 anotations in its response, as detailed in the NMDA.  This parameter
 is only valid for the operational state datastore and any datastores
 with identities derived from the "operational" identity.  Otherwise,
-if an invalid datastore is specified then an <rpc-error> element is
-returned with an <error-tag> value of "invalid-value".  "origin"
-metadata annotations are not included unless a client explicitly
-requests them.
+if an invalid datastore is specified then an error is returned, as
+specified in "ietf-netconf-nmda" (see ^yangmod^). Note that "origin"
+metadata annotations are not included in a response unless a client
+explicitly requests them.
 
 Data in the operational state datastore can come from multiple
 sources.  The server should return the most accurate value for the
 "origin" metadata annotation as possible, indicating the source of the
-operational value, as specified in section 5.3.4 of
+operational value, as specified in Section 5.3.4 of
 ^I-D.ietf-netmod-revised-datastores^.
 
 When encoding the origin metadata annotation for a hierarchy of
@@ -193,8 +194,8 @@ operation.
 ** Augmentations to NETCONF Operations
 
 Several of the operations defined in the base NETCONF YANG module
-^RFC6241^ may to be used for new datastores.  Hence, the <lock>,
-<unlock>, and <validate> operations are augmented with a new
+"ietf-netconf" ^RFC6241^ may be used with new datastores.  Hence, the
+<lock>, <unlock>, and <validate> operations are augmented with a new
 "datastore" leaf that can select the desired datastore.  If a <lock>,
 <unlock>, or <validate> operation is not supported on a particular
 datastore then an error is returned, as specified in
@@ -202,13 +203,13 @@ datastore then an error is returned, as specified in
 
 * NETCONF Datastores YANG Module @yangmod@
 
-This module imports definitions from ^RFC6991^, ^RFC6241^, ^RFC6243',
+This module imports definitions from ^RFC6991^, ^RFC6241^, ^RFC6243^,
 and ^I-D.ietf-netmod-revised-datastores^.
 
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
 
-!! include-figure ietf-netconf-nmda.yang extract-to="ietf-netconf-nmda@2018-01-11.yang"
+!! include-figure ietf-netconf-nmda.yang extract-to="ietf-netconf-nmda@2018-01-17.yang"
 
 * IANA Considerations
 
