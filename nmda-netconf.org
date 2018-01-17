@@ -19,14 +19,14 @@ REF Editor: please replace "I-D.ietf-netmod-revised-datastores" and
 * Introduction
 
 This document extends the NETCONF protocol defined in ^RFC6241^ in
-order to support by a server implementing the Network Management
-Datastore Architecture (NMDA) defined in
-^I-D.ietf-netmod-revised-datastores^.
+order to support the Network Management Datastore Architecture (NMDA)
+defined in ^I-D.ietf-netmod-revised-datastores^.
 
-This document updates ^RFC6241^ in order to enable NETCONF clients
-to interact with all the datastores supported by the NMDA.  The
-update both adds new operations <get-data> and <edit-data>, and
-augments existing operations <lock>, <unlock>, and <validate>.
+This document updates ^RFC6241^ in order to enable NETCONF clients to
+interact with all the datastores supported by a server implementing
+the NMDA.  The update both adds new operations <get-data> and
+<edit-data>, and augments existing operations <lock>, <unlock>, and
+<validate>.
 
 This document also updates ^RFC7950^ in order to enable NETCONF
 clients to both discover which datastores are supported by the
