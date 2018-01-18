@@ -147,7 +147,7 @@ module ietf-netconf-nmda {
            'config' property.";
       }
       leaf origin-filter {
-        when 'derived-from-or-self(../datastore, "or:operational")';
+        when 'derived-from-or-self(../datastore, "ds:operational")';
         if-feature origin;
         type identityref {
           base or:origin;
@@ -177,7 +177,7 @@ module ietf-netconf-nmda {
       }
 
       leaf with-origin {
-        when 'derived-from-or-self(../datastore, "or:operational")';
+        when 'derived-from-or-self(../datastore, "ds:operational")';
         if-feature origin;
         type empty;
         description
