@@ -32,6 +32,8 @@ If the server implements multiple protocols to access the
 YANG-defined data, each such protocol has its own conceptual
 instantiation of the YANG library.
 
+# FIXME: rewrite text below
+
 The following information is needed by a client application
 (for each YANG module in the library)
 to fully utilize the YANG data modeling language:
@@ -209,10 +211,12 @@ and only refetch it if the value of this leaf has been changed.
 If the value of this leaf changes, the server also generates a
 "yang-library-update" notification.
 
-Note that for a NETCONF server that implements YANG 1.1 ^RFC7950^, a
-change of the "checksum" value results in a new value for the
-:yang-library capability defined in ^RFC7950^.  Thus, if such a server
-implements NETCONF notifications ^RFC5277^, and the notification
+Note that for a NETCONF server that implements the NMDA
+^I-D.ietf-netmod-revised-datastores^ ^I-D.ietf-netconf-nmda-netconf^,
+a change of the "checksum" value results in a new value for the
+:yang-library:1.1 capability defined in
+^I-D.ietf-netconf-nmda-netconf^.  Thus, if such a server implements
+NETCONF notifications ^RFC5277^, and the notification
 "netconf-capability-change" ^RFC6470^, a "netconf-capability-change"
 notification is generated whenever the "checksum" changes.
 
@@ -244,9 +248,15 @@ all referenced module sets.
 
 *** yang-library/module-set
 
+# FIXME: add text
+
 *** yang-library/module-set/module
 
+# FIXME: add text
+
 *** yang-library/module-set/import-only-module
+
+# FIXME: add text
 
 ** YANG Library Module @library-module@
 
