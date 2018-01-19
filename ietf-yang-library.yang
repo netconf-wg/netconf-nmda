@@ -40,9 +40,9 @@ module ietf-yang-library {
                <rwilton@cisco.com>";
 
   description
-    "This module contains information about the YANG server instance,
-     including the modules and datastores the server supports, and
-     which modules are present in which datastores.
+    "This module provides information about the YANG modules,
+     datastores, and datastore schemas used by a network 
+     management server.
 
      Copyright (c) 2018 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
@@ -61,11 +61,12 @@ module ietf-yang-library {
   // and remove this note.
   // RFC Ed.: replace XXXX with actual RFC number and remove this
   // note.
-  revision 2018-01-17 {
+  revision 2018-01-19 {
     description
-      "Added support for multiple datastores.";
+      "Added support for multiple datastores according to the
+       Network Management Datastore Architecture (NMDA).";
     reference
-      "RFC XXXX: YANG Library.";
+      "RFC XXXX: A YANG Data Model for the YANG Library.";
   }
   revision 2016-04-09 {
     description
@@ -156,7 +157,11 @@ module ietf-yang-library {
         }
         description
           "A module that deviates the module associated with this
-           entry.";
+           entry.
+
+           While this reference MUST NOT be directly or indirectly
+           self-referential, clients must make sure that they
+           handle such a situation gracefully.";
       }
     }
   }
@@ -169,16 +174,6 @@ module ietf-yang-library {
       type string;
       description
         "An arbitrary name of the module set.";
-    }
-    leaf checksum {
-      type string;
-      config false;
-      mandatory true;
-      description
-        "A server-generated checksum of the contents of the module
-         set.  The server MUST change the value of this leaf if the
-         information represented by the module set, except
-         'checksum', has changed.";
     }
     list module {
       key "name";
@@ -238,7 +233,7 @@ module ietf-yang-library {
           }
         }
         description
-          "The YANG module or revision date.
+          "The YANG module revision date.
            A zero-length string is used if no revision statement
            is present in the YANG module.";
       }
@@ -288,16 +283,6 @@ module ietf-yang-library {
         description
           "An arbitrary name of the schema.";
       }
-      leaf checksum {
-        type string;
-        config false;
-        mandatory true;
-        description
-          "A server-generated checksum of the contents of the schema.
-           The server MUST change the value of this leaf if the
-           information represented by the schema, except 'checksum',
-           has changed.";
-      }
       leaf-list module-set {
         type leafref {
           path "../../module-set/name";
@@ -321,9 +306,7 @@ module ietf-yang-library {
          reference the same schema.";
 
       leaf name {
-        type identityref {
-          base ds:datastore;
-        }
+        type ds:datastore-ref;
         description
           "The identity of the datastore.";
       }
@@ -332,7 +315,6 @@ module ietf-yang-library {
           path "../../schema/name";
         }
         mandatory true;
-
         description
           "A reference to the schema supported by this datastore.";
       }
@@ -346,8 +328,7 @@ module ietf-yang-library {
   container yang-library {
     config false;
     description
-      "Container providing all the YANG meta information the
-       server possesses.";
+      "Container holding the entire YANG library of this server.";
 
     uses yang-library-parameters;
 

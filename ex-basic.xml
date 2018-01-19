@@ -1,0 +1,76 @@
+<yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
+              xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
+
+  <module-set>
+    <name>config-modules</name>
+    <module>
+      <name>ietf-interfaces</name>
+      <revision>2018-01-09</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-interfaces</namespace>
+    </module>
+    <module>
+      <name>ietf-ip</name>
+      <revision>2018-01-09</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-ip</namespace>
+    </module>
+    <import-only-module>
+      <name>ietf-yang-types</name>
+      <revision>2013-07-15</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-inet-types</name>
+      <revision>2013-07-15</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+    </import-only-module>
+  </module-set>
+  
+  <module-set>
+    <name>state-modules</name>
+    <module>
+      <name>ietf-hardware</name>
+      <revision>2018-12-18</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-hardware</namespace>
+    </module>
+    <import-only-module>
+      <name>ietf-inet-types</name>
+      <revision>2013-07-15</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-yang-types</name>
+      <revision>2013-07-15</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>iana-hardware</name>
+      <revision>2017-12-18</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:iana-hardware</namespace>
+    </import-only-module>
+  </module-set>
+
+  <schema>
+    <name>config-schema</name>
+    <module-set>config-modules</module-set>
+  </schema>
+  <schema>
+    <name>state-schema</name>
+    <module-set>config-modules</module-set>
+    <module-set>state-modules</module-set>
+  </schema>
+  
+  <datastore>
+    <name>ds:startup</name>
+    <schema>config-schema</schema>
+  </datastore>
+  <datastore>
+    <name>ds:running</name>
+    <schema>config-schema</schema>
+  </datastore>
+  <datastore>
+    <name>ds:operational</name>
+    <schema>state-schema</schema>
+  </datastore>
+  
+  <checksum>75a43df9bd56b92aacc156a2958fbe12312fb285</checksum>
+</yang-library>

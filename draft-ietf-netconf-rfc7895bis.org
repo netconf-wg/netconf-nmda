@@ -1,45 +1,99 @@
 # -*- org -*-
 
 This document describes a YANG library that provides information about
-all the YANG modules and datastores used by a network management
-server (e.g., a Network Configuration Protocol (NETCONF) server).
-Simple caching mechanisms are provided to allow clients to minimize
-retrieval of this information.
+the YANG modules, datastores, and datastore schemas used by a network
+management server. Simple caching mechanisms are provided to allow
+clients to minimize retrieval of this information. This version of the
+YANG library supports the Network Management Datastore Architecture by
+listing all datastores supported by a network management server and
+the schema that is used by these datastores.
+
+This document obsoletes RFC 7895.
 
 * Introduction
 
-There is a need for standard mechanisms to provide the operational
-state of a network management server.  This includes, for instance,
-identifying the YANG modules and datastores that are in use by a
-server and how they relate to each other.
+There is a need for a standard mechanism to expose which YANG modules
+^RFC7950^, datastores and datastore schemas
+^I-D.ietf-netmod-revised-datastores^ are in use by a network
+management server.
 
-This document defines a YANG module that can be used to provide this
-informaton, in a way that is compatible with the NMDA
-^I-D.ietf-netmod-revised-datastores^, but that is also backwards
-compatible with the "YANG Module Library" YANG module defined in
-^RFC7895^.
+This document defines the YANG module "ietf-yang-library" that
+provides this informaton. This version of the YANG library is
+compatible with the Network Management Datastore Architecture (NMDA)
+^I-D.ietf-netmod-revised-datastores^. The previous version of the YANG
+library, defined in ^RFC7895^, is not compatible with the NMDA since
+it assumes that all datastores have exactly the same schema. This is
+not generally true in the NMDA since dynamic datastores may have their
+own datastore schema. In addition, the operational state datastore may
+support additional non-configurable YANG modules. The old YANG library
+definitions have been retained (for backwards compability reasons) but
+the definitions have been marked as deprecated. For backwards
+compatability, an NMDA-supporting server SHOULD populate the
+deprecated "/modules-state" tree in a backwards-compatible manner.
+The new "/yang-library" tree would be ignored by legacy clients, while
+providing all the data needed for NMDA-aware clients, which would
+themselves ignore the "/modules-state" tree.
 
-If a large number of YANG modules are utilized by the server,
-then the YANG library contents needed can be relatively large.  This
-information changes very infrequently, so it is important that clients
-be able to cache the YANG library contents and easily identify whether
+The YANG library information can be different on every server and it
+can change at runtime or across a server reboot. If a server
+implements multiple network management protocols to access the
+server's datastores, then each such protocol may have its own
+conceptual instantiation of the YANG library.
+
+If a large number of YANG modules are utilized by a server, then the
+YANG library contents can be relatively large.  Since the YANG library
+contents changes very infrequently, it is important that clients be
+able to cache the YANG library contents and easily identify whether
 their cache is out of date.
 
-YANG library information can be different on every server
-and can change at runtime or across a server reboot.
+All NETCONF servers supporting YANG 1.1 ^RFC7950^ are required to
+support YANG Library (see Section 5.6.4 of RFC 7950). NETCONF servers
+implementing the NETCONF extensions to support the NMDA
+^I-D.ietf-netconf-nmda-netconf^ must implement at least this version
+of the YANG library. Similarly, all RESTCONF servers are required to
+support YANG Library (see Section 10 of RFC 8040). RESTCONF servers
+implementing the RESTCONF extensions to support the NMDA
+^I-D.ietf-netconf-nmda-restconf^ must implement at least this version
+of the YANG library.
 
-If the server implements multiple protocols to access the
-YANG-defined data, each such protocol has its own conceptual
-instantiation of the YANG library.
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+"OPTIONAL" in this document are to be interpreted as described in BCP
+14, ^RFC2119^.
 
-# FIXME: rewrite text below
+* Terminology
 
-The following information is needed by a client application
-(for each YANG module in the library)
-to fully utilize the YANG data modeling language:
+The following terms are defined in ^RFC7950^:
 
-- identifier: a unique identifier for the module that includes
-the module's name, revision, submodules, features, and deviations.
+- module
+- submodule
+- data node
+
+The following terms are defined in ^I-D.ietf-netmod-revised-datastores^:
+
+- datastore
+- datastore schema
+- configuration
+- configuration datastore
+- conventional configuration
+- conventional configuration datastore
+- operational state
+- operational state datastore
+- client and server
+
+The following terms are used within this document:
+
+- YANG library: A collection of YANG modules, submodules, datastores,
+  and datastore schemas used by a server.
+
+Tree diagrams used in this document use the notation defined in
+^I-D.ietf-netmod-yang-tree-diagrams^.
+
+* Objectives
+
+The following information is needed by a client application (for each
+YANG module in the library) to fully utilize the YANG data modeling
+language:
 
 - name: The name of the YANG module.
 
@@ -56,72 +110,16 @@ server, in a given datastore schema, MUST be identified.
 - deviation list: The name of each YANG module used for deviation
 statements, in a given datastore schema, MUST be identified.
 
-The following information is needed by a client application
-(for each datastore supported by the server) to fully access
-all the YANG-modelled data available on the server:
+In addition, the following information is needed by a client
+application for each datastore supported by a server:
 
-- identity: the YANG identity for the datastore.
+- identity: The YANG identity for the datastore.
 
-- modules: modules supported by the datastore, including any features
-and deviations.
+- schema: The schema (i.e., the set of modules) implemented by the
+  datastore.
 
-** Terminology
-
-The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-"SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-"OPTIONAL" in this document are to be interpreted as described in BCP
-14, ^RFC2119^.
-
-The following terms are defined in ^RFC7950^:
-
-- module
-- submodule
-
-The following terms are defined in ^I-D.ietf-netmod-revised-datastores^:
-
-- conventional configuration datastore
-- operational state datastore
-- operational state
-- datastore schema
-- client
-- server
-
-** Tree Diagrams
-
-Tree diagrams used in this document follow the notation defined in
-^I-D.ietf-netmod-yang-tree-diagrams^.
-
-** Motivation for rfc7895bis
-
-RFC Ed.: delete this section, including this note, at time of publication.
-
-All NETCONF servers supporting YANG 1.1 ^RFC7950^ are required to support
-YANG Library (see Section 5.6.4 of RFC 7950).  Similarly, all RESTCONF
-servers are required to support YANG Library (see Section 10 of RFC
-8040).  These requirements are independent of if the server supports
-NMDA or not.
-
-RFC 7895 has a mandatory to implement "modules-state" tree that a server
-uses to advertise all the modules it supports.  However, this module was
-designed assuming the all modules would be in all datastores, and with the
-same number of features and deviations.  However, this is not the case
-with NMDA-compatible servers that may have some modules that only appear
-in <operational> (e.g., ietf-network-topo) or only also appear in a dynamic
-datastore (e.g., i2rs-ephemeral-rib).  It is also possible that a server
-only implements a module in <running>, as it hasn't yet coded support for
-returning the module's opstate yet.  Presumably, an NMDA-supporting server
-would return all modules implemented in every datastore, but this would be
-misleading to existing clients and unhelpful to NMDA-aware clients.
-
-In the end, it appears that the "modules-state" node should be for non-NMDA
-aware clients.  For backwards compatability, an NMDA-supporting server SHOULD
-populate "modules-state" in a backwards-compatible manner.  The new
-"yang-library" node would be ignored by legacy clients, while providing
-all the data needed for NMDA-aware clients, which would themselves ignore
-the "modules-state" tree.
-
-
-Design objectives:
+In order to select one out of several possible data model designs, the
+following criteria were used:
 
 + As efficient as possible for a client to consume.
 Since the size of the yang library can be quite large, it should
@@ -144,150 +142,123 @@ datastores.
 + Multiple revisions can be used for import, if import-by revision
 is used.
 
-+ Nice to have: make it possible to be used by schema mount
++ Make it possible to use the YANG library by schema mount
+  ^I-D.ietf-netmod-schema-mount^.
 
+* YANG Library Data Model
 
-The solution presented in this document is further motivated
-by the following desires:
+The "ietf-yang-library" YANG module provides information about the
+modules, submodules, datastores, and datastore schemas supported by a
+server. All data nodes in "ietf-yang-library" are "config false", and
+thus accessible in the operational state datastore.
 
-- leverage Section 5.6.4 of RFC 7950 and Section 10 of RFC 8040.
-- indicate which modules are supported by each datastore
-- enable the features and deviations to vary by datastore
-- structure extensible to support schema-mount
-- provide a top-level container for all server metadata
+# use @ to bypass oxtradoc in order to get numbered figures
+#+BEGIN_EXAMPLE
+@<figure anchor="model"><artwork><![CDATA[
+@+-----------+
+@| datastore |
+@+-----------+
+@     |
+@     | has a
+@     V
+@+-----------+            +--------+   	      	   +------------+
+@| datastore |  union of  | module |  consists of   | modules +	|
+@|  schema   |----------->|  set   |--------------->| submodules	|
+@+-----------+            +--------+                +------------+
+@]]></artwork></figure>
 
-** Summary of Changes from RFC 7895
+#+END_EXAMPLE
 
-This document updates ^RFC7895^ in the following ways:
+The conceptual model of the YANG library is depicted in
+Figure 1. Following NMDA, every datastore has an associated datastore
+schema. A datastore schema is a union of module sets and every module
+set is a collection of modules and submodules, including the modules
+and submodules used for imports. Note that multiple datastores may
+refer to the same datastore schema. Furthermore, it is possible that
+datastore schemas share module sets. A common use case is an
+operational state datastore schema which is a superset of the schema
+used by conventional configuration datastores.
 
-- Renames document title from "YANG Module Library" to "YANG Library".
-
-- Adds a new top-level "yang-library" container to hold many types of
-  server metadata: modules supported, datastores supported, relationships
-  between datastores and modules, etc.
-
-- Adds a set of new groupings as replacements for the deprecated
-  "module-list" grouping.
-
-- Adds a "yang-library-update" notification as a replacement for the
-  deprecated "yang-library-change" notification.
-
-- Deprecates the "modules-state" tree.
-
-- Deprecates the "module-list" grouping.
-
-- Deprecates the "yang-library-change" notification.
-
-* YANG Library
-
-The "ietf-yang-library" module provides information about the modules
-and datastores supported by a server.  This module is defined using
-YANG version 1.1, but it supports the description of YANG modules
-written in any revision of YANG.
-
-All data nodes in "ietf-yang-library" are "config false", and thus
-accessible in the operational state datastore.
-
-Following is the YANG Tree Diagram for the "ietf-yang-library" module,
+Below is the YANG Tree Diagram for the "ietf-yang-library" module,
 excluding the deprecated "modules-state" tree:
 
 !! include-figure ietf-yang-library.tree
 
-** yang-library
+The "/yang-library" container holds the entire YANG library. The
+container has the following child nodes:
 
-This container holds all of the server's metadata.
+- The "/yang-library/module-set" contains entries representing module
+  sets. The list "/yang-library/module-set/modules" enumerates the
+  modules that belong to the module set. A module is listed together
+  with its submodules (if any), a set of features, and any deviation
+  modules. The list "/yang-library/module-set/import-only-modules"
+  lists all modules (and their submodules) used for imports.
 
-*** yang-library/checksum
+- The "/yang-library/schema" list contains an entry for each datastore
+  schema supported by the server. All conventional configuration
+  datastores use the same "schema" list entry. A dynamic configuration
+  datastore may use a different datastore schema from the conventional
+  configuration datastores, and hence may require a separate "schema"
+  entry. A "schema" entry has a leaf-list of references to entries in
+  the "module-set" list.  The schema consists of the union of all
+  modules in all referenced module sets.
 
-This mandatory leaf contains a unique implementation-specific
-identifier representing the current information in the YANG library on
-a specific server.  The value of this leaf MUST change whenever the
-the information in the YANG library changes.  There is no requirement
-that the same information always results in the same "checksum" value.
+- The "/yang-library/datastore" list contains one entry for each
+  datastore supported by the server, and it identifies the datastore
+  schema associated with a datastore via a reference to an entry in
+  the "schema" list. Each supported conventional configuration
+  datastore has a separate entry, pointing to the same "schema" list
+  element.
 
-This leaf allows a client to fetch all schema information once, cache it,
-and only refetch it if the value of this leaf has been changed.
+- The "/yang-library/checksum" leaf contains a unique
+  implementation-specific identifier representing the current
+  information in the YANG library on a specific server.  The value of
+  this leaf MUST change whenever the information in the YANG library
+  changes. There is no requirement that the same information always
+  results in the same "checksum" value. This leaf allows a client to
+  fetch all schema information once, cache it, and only refetch it if
+  the value of this leaf has been changed. If the value of this leaf
+  changes, the server also generates a "yang-library-update"
+  notification.
 
-If the value of this leaf changes, the server also generates a
-"yang-library-update" notification.
+Note that for a NETCONF server implementing the NETCONF extensions to
+support the NMDA ^I-D.ietf-netconf-nmda-netconf^, a change of the
+"checksum" value results in a new value for the :yang-library:1.1
+capability defined in ^I-D.ietf-netconf-nmda-netconf^.  Thus, if such
+a server implements NETCONF notifications ^RFC5277^, and the
+notification "netconf-capability-change" ^RFC6470^, a
+"netconf-capability-change" notification is generated whenever the
+"checksum" changes.
 
-Note that for a NETCONF server that implements the NMDA
-^I-D.ietf-netmod-revised-datastores^ ^I-D.ietf-netconf-nmda-netconf^,
-a change of the "checksum" value results in a new value for the
-:yang-library:1.1 capability defined in
-^I-D.ietf-netconf-nmda-netconf^.  Thus, if such a server implements
-NETCONF notifications ^RFC5277^, and the notification
-"netconf-capability-change" ^RFC6470^, a "netconf-capability-change"
-notification is generated whenever the "checksum" changes.
+* YANG Library YANG Module @library-module@
 
-*** yang-library/datastore
-
-This list contains one entry for each datastore supported by the
-server, and identifies the datastore schema associated with a
-datastore via a reference to an entry in the "schema" list.  Each
-supported conventional configuration datastore has a separate entry.
-
-*** yang-library/schema
-
-An entry in the "schema" list represents the datastore schema that is
-used by one or more datastores.
-
-This list contains one entry for each schema in use by the server
-(e.g., presented by a datastore).
-
-All conventional configuration datastores and the operational
-state datastore use the same "schema" entry.
-
-A dynamic configuration datastore may use a different datastore schema
-from the conventional configuration datastores, and hence may require
-a separate "schema" entry.
-
-A schema has a leaf-list with references to entries in the
-"module-set" list.  The schema consists of the sum of all modules in
-all referenced module sets.
-
-*** yang-library/module-set
-
-# FIXME: add text
-
-*** yang-library/module-set/module
-
-# FIXME: add text
-
-*** yang-library/module-set/import-only-module
-
-# FIXME: add text
-
-** YANG Library Module @library-module@
-
-The "ietf-yang-library" module defines monitoring
-information for the YANG modules used by a server.
-
-The modules "ietf-yang-types" and "ietf-inet-types" from ^RFC6991^
-and the module "ietf-datastores" from ^I-D.ietf-netmod-revised-datastores^
-are used by this module for some type definitions.
+The "ietf-yang-library" YANG module imports definitions from
+"ietf-yang-types" and "ietf-inet-types" defined in ^RFC6991^ and from
+"ietf-datastores" defined in ^I-D.ietf-netmod-revised-datastores^.
+While the YANG module is defined using YANG version 1.1, the YANG
+library supports the YANG modules written in any version of YANG.
 
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
 
-!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2018-01-17.yang"
+!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2018-01-19.yang"
 
 * IANA Considerations @iana@
 
-** YANG Module Registry
-
 RFC 7895 previously registered one URI in the IETF XML registry
-^RFC3688^.  Following the format in RFC 3688, the following
-registration was made:
+^RFC3688^.  This document takes over this registration entry made by
+RFC 7895 and changes the Registrant to the IESG according to Section 4
+in ^RFC3688^.
 
-     URI: urn:ietf:params:xml:ns:yang:ietf-yang-library
-     Registrant Contact: The NETCONF WG of the IETF.
-     XML: N/A, the requested URI is an XML namespace.
+  URI: urn:ietf:params:xml:ns:yang:ietf-yang-library
 
-This document takes over this registration entry made by RFC 7895.
+  Registrant Contact: The IESG.
 
-RFC 7895 previously registered one YANG module in the
-"YANG Module Names" registry ^RFC6020^ as follows:
+  XML: N/A, the requested URI is an XML namespace.
+
+
+RFC 7895 previously registered one YANG module in the "YANG Module
+Names" registry ^RFC6020^ as follows:
 
   name:         ietf-yang-library
   namespace:    urn:ietf:params:xml:ns:yang:ietf-yang-library
@@ -298,12 +269,13 @@ This document takes over this registration entry made by RFC 7895.
 
 * Security Considerations
 
-The YANG module defined in this document is designed to be accessed
-via network management protocols such as NETCONF ^RFC6241^ or RESTCONF
-^RFC8040^. The lowest NETCONF layer is the secure transport layer, and
-the mandatory-to-implement secure transport is Secure Shell (SSH)
-^RFC6242^. The lowest RESTCONF layer is HTTPS, and the
-mandatory-to-implement secure transport is TLS ^RFC5246^.
+The YANG module specified in this document defines a schema for data
+that is accessed by network management protocols such as NETCONF
+^RFC6241^ or RESTCONF ^RFC8040^. The lowest NETCONF layer is the
+secure transport layer, and the mandatory-to-implement secure
+transport is Secure Shell (SSH) ^RFC6242^. The lowest RESTCONF layer
+is HTTPS, and the mandatory-to-implement secure transport is TLS
+^RFC5246^.
 
 The NETCONF access control model ^RFC6536^ provides the means to
 restrict access for particular NETCONF or RESTCONF users to a
@@ -316,21 +288,21 @@ important to control read access (e.g., via get, get-config, or
 notification) to these data nodes.  These are the subtrees and data
 nodes and their sensitivity/vulnerability:
 
-- /yang-library/schema: The schema list used in a server
-implementation may help an attacker identify the server capabilities
-and server implementations with known bugs.
-Although some of this information may
-be available to all users via the NETCONF <hello> message (or similar
-messages in other management protocols), this YANG module potentially
-exposes additional details that could be of some assistance to an
-attacker. Server vulnerabilities may be
-specific to particular modules, module revisions, module features,
-or even module deviations.  This information is included in each module entry.
-For example, if a particular operation on a particular data node is
-known to cause a server to crash or significantly degrade device performance,
-then the module list information will help an
-attacker identify server implementations with such a defect, in order
-to launch a denial-of-service attack on the device.
+The "/yang-library" subtree of the YANG library may help an attacker
+identify the server capabilities and server implementations with known
+bugs since the set of YANG modules supported by a server may reveal
+the kind of device and the manufacturer of the device.  Although some
+of this information may be available to all NETCONF users via the
+NETCONF <hello> message (or similar messages in other management
+protocols), this YANG module potentially exposes additional details
+that could be of some assistance to an attacker. Server
+vulnerabilities may be specific to particular modules, module
+revisions, module features, or even module deviations. For example, if
+a particular operation on a particular data node is known to cause a
+server to crash or significantly degrade device performance, then the
+module list information will help an attacker identify server
+implementations with such a defect, in order to launch a
+denial-of-service attack on the device.
 
 * Acknowledgements
 
@@ -344,14 +316,54 @@ The Space & Terrestrial Communications Directorate (S&TCD).
 
 *! start-appendix
 
+* Summary of Changes from RFC 7895
+
+# FIXME: make sure this is correct and complete
+
+This document updates ^RFC7895^ in the following ways:
+
+- Renamed document title from "YANG Module Library" to "A YANG Data
+  Model for the YANG Library".
+
+- Added a new top-level "/yang-library" container to hold the entire
+  YANG library providing information about module sets, schemas, and
+  datastores.
+
+- Refactored the "/modules-state" container into a new
+  "/yang-library/module-set" list.
+
+- Added a new "/yang-library/schema" list and a new
+  "/yang-library/datastore" list.
+
+- Added a set of new groupings as replacements for the deprecated
+  groupings.
+
+- Added a "yang-library-update" notification as a replacement for the
+  deprecated "yang-library-change" notification.
+
+- Deprecated the "/modules-state" tree.
+
+- Deprecated the "/module-list" grouping.
+
+- Deprecated the "/yang-library-change" notification.
+
+* Example YANG Library Instance for a Basic Server
+
+The following example shows the YANG Library of a basic server
+implementing the "ietf-interfaces" ^I-D.ietf-netmod-rfc7223bis^ and
+"ietf-ip" ^I-D.ietf-netmod-rfc7277bis^ modules in the <running>,
+<startup>, and <operation> datastores and the "ietf-hardware"
+^I-D.ietf-netmod-entity^ module in the <operational> datastore.
+
+!! include-figure ex-basic.xml
 
 {{document:
     name ;
     ipr trust200902;
     category std;
     references back.xml;
-    obsoletes rfc7895;
-    title "YANG Library";
+    obsoletes 7895;
+    title "A YANG Data Model for the YANG Library";
     abbreviation "YANG Library";
     contributor "author:Andy Bierman:YumaWorks:andy@yumaworks.com";
     contributor "author:Martin Bjorklund:Tail-f Systems:mbj@tail-f.com";

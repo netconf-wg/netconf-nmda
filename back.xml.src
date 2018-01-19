@@ -38,5 +38,15 @@
 
   ietf-ref:I-D.ietf-netconf-nmda-netconf
 
+  ietf-ref:I-D.ietf-netconf-nmda-restconf
+
+  ietf-ref:I-D.ietf-netmod-rfc7223bis
+
+  ietf-ref:I-D.ietf-netmod-rfc7277bis
+
+  ietf-ref:I-D.ietf-netmod-entity
+
+  ietf-ref:I-D.ietf-netmod-schema-mount
+
 </references>
 
