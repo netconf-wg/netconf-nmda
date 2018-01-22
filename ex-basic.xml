@@ -1,5 +1,7 @@
-<yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
-              xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
+<data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+<yang-library
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
+    xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
 
   <module-set>
     <name>config-modules</name>
@@ -24,7 +26,7 @@
       <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
     </import-only-module>
   </module-set>
-  
+
   <module-set>
     <name>state-modules</name>
     <module>
@@ -58,7 +60,7 @@
     <module-set>config-modules</module-set>
     <module-set>state-modules</module-set>
   </schema>
-  
+
   <datastore>
     <name>ds:startup</name>
     <schema>config-schema</schema>
@@ -71,6 +73,7 @@
     <name>ds:operational</name>
     <schema>state-schema</schema>
   </datastore>
-  
+
   <checksum>75a43df9bd56b92aacc156a2958fbe12312fb285</checksum>
 </yang-library>
+</data>

@@ -23,16 +23,17 @@ compatible with the Network Management Datastore Architecture (NMDA)
 ^I-D.ietf-netmod-revised-datastores^. The previous version of the YANG
 library, defined in ^RFC7895^, is not compatible with the NMDA since
 it assumes that all datastores have exactly the same schema. This is
-not generally true in the NMDA since dynamic datastores may have their
-own datastore schema. In addition, the operational state datastore may
-support additional non-configurable YANG modules. The old YANG library
-definitions have been retained (for backwards compability reasons) but
-the definitions have been marked as deprecated. For backwards
-compatability, an NMDA-supporting server SHOULD populate the
-deprecated "/modules-state" tree in a backwards-compatible manner.
-The new "/yang-library" tree would be ignored by legacy clients, while
-providing all the data needed for NMDA-aware clients, which would
-themselves ignore the "/modules-state" tree.
+not generally true in the NMDA since dynamic configuration datastores
+may have their own datastore schema. In addition, the operational
+state datastore may support additional non-configurable YANG
+modules. The old YANG library definitions have been retained (for
+backwards compability reasons) but the definitions have been marked as
+deprecated. For backwards compatability, an NMDA-supporting server
+SHOULD populate the deprecated "/modules-state" tree in a
+backwards-compatible manner.  The new "/yang-library" tree would be
+ignored by legacy clients, while providing all the data needed for
+NMDA-aware clients, which would themselves ignore the "/modules-state"
+tree.
 
 The YANG library information can be different on every server and it
 can change at runtime or across a server reboot. If a server
@@ -49,12 +50,12 @@ their cache is out of date.
 All NETCONF servers supporting YANG 1.1 ^RFC7950^ are required to
 support YANG Library (see Section 5.6.4 of RFC 7950). NETCONF servers
 implementing the NETCONF extensions to support the NMDA
-^I-D.ietf-netconf-nmda-netconf^ must implement at least this version
-of the YANG library. Similarly, all RESTCONF servers are required to
-support YANG Library (see Section 10 of RFC 8040). RESTCONF servers
-implementing the RESTCONF extensions to support the NMDA
-^I-D.ietf-netconf-nmda-restconf^ must implement at least this version
-of the YANG library.
+^I-D.ietf-netconf-nmda-netconf^ must implement at least the version of
+the YANG library defined in this document. Similarly, all RESTCONF
+servers are required to support YANG Library (see Section 10 of RFC
+8040). RESTCONF servers implementing the RESTCONF extensions to
+support the NMDA ^I-D.ietf-netconf-nmda-restconf^ must implement at
+least the version of the YANG library defined in this document.
 
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
@@ -79,6 +80,7 @@ The following terms are defined in ^I-D.ietf-netmod-revised-datastores^:
 - conventional configuration datastore
 - operational state
 - operational state datastore
+- dynamic configuration datastore
 - client and server
 
 The following terms are used within this document:
@@ -126,7 +128,8 @@ Since the size of the yang library can be quite large, it should
 be possible for clients to cache the yang library information.
 
 + A dynamic configuration datastore must be able to implement a module
-or feature that is not implemented in the conventional datastores.
+or feature that is not implemented in the conventional configuration
+datastores.
 
 + It must be possible to NOT implement a module or feature in
 <operational>, even if it is implemented in some other datastore.
@@ -170,7 +173,7 @@ thus accessible in the operational state datastore.
 #+END_EXAMPLE
 
 The conceptual model of the YANG library is depicted in
-Figure 1. Following NMDA, every datastore has an associated datastore
+Figure 1. Following the NMDA, every datastore has an associated datastore
 schema. A datastore schema is a union of module sets and every module
 set is a collection of modules and submodules, including the modules
 and submodules used for imports. Note that multiple datastores may
@@ -188,11 +191,11 @@ The "/yang-library" container holds the entire YANG library. The
 container has the following child nodes:
 
 - The "/yang-library/module-set" contains entries representing module
-  sets. The list "/yang-library/module-set/modules" enumerates the
+  sets. The list "/yang-library/module-set/module" enumerates the
   modules that belong to the module set. A module is listed together
   with its submodules (if any), a set of features, and any deviation
-  modules. The list "/yang-library/module-set/import-only-modules"
-  lists all modules (and their submodules) used for imports.
+  modules. The list "/yang-library/module-set/import-only-module"
+  lists all modules (and their submodules) used only for imports.
 
 - The "/yang-library/schema" list contains an entry for each datastore
   schema supported by the server. All conventional configuration
@@ -352,10 +355,10 @@ This document updates ^RFC7895^ in the following ways:
 The following example shows the YANG Library of a basic server
 implementing the "ietf-interfaces" ^I-D.ietf-netmod-rfc7223bis^ and
 "ietf-ip" ^I-D.ietf-netmod-rfc7277bis^ modules in the <running>,
-<startup>, and <operation> datastores and the "ietf-hardware"
+<startup>, and <operational> datastores and the "ietf-hardware"
 ^I-D.ietf-netmod-entity^ module in the <operational> datastore.
 
-!! include-figure ex-basic.xml
+!! include-figure ex-basic.load
 
 {{document:
     name ;

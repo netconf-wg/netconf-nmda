@@ -41,7 +41,7 @@ module ietf-yang-library {
 
   description
     "This module provides information about the YANG modules,
-     datastores, and datastore schemas used by a network 
+     datastores, and datastore schemas used by a network
      management server.
 
      Copyright (c) 2018 IETF Trust and the persons identified as

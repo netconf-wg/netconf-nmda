@@ -28,6 +28,9 @@ next_ver ?= $(shell printf "%.2d" $$((1$(current_ver)-99)))
 endif
 next := $(draft)-$(next_ver)
 
+examples = $(wildcard ex-*.xml)
+load=$(patsubst ex-%.xml,ex-%.load,$(examples))
+
 .PHONY: latest submit clean validate
 
 submit: $(next).txt
@@ -38,7 +41,7 @@ idnits: $(next).txt
 	$(idnits) $<
 
 clean:
-	-rm -f $(draft).txt $(draft).html index.html back.xml
+	-rm -f $(draft).txt $(draft).html index.html back.xml $(load)
 	-rm -f $(next).txt $(next).html
 	-rm -f $(draft)-[0-9][0-9].xml
 ifeq (.md,$(draft_type))
@@ -48,9 +51,21 @@ ifeq (.org,$(draft_type))
 	-rm -f $(draft).xml
 endif
 
-validate:
+%.load: %.xml
+	 cat $< | awk -f fix-load-xml.awk > $@
+.INTERMEDIATE: $(load)
+
+validate: validate-std-yang validate-ex-xml
+
+validate-std-yang:
 	pyang --ietf --max-line-length 69 \
 	  -p ../../netmod-wg/datastore-dt ietf-yang-library.yang
+
+validate-ex-xml:
+	env YANG_MODPATH=../iana-if-type:$(YANG_MODPATH) \
+	  yang2dsdl -x -c -j -t data -v ex-basic.xml \
+	  ../../netmod-wg/datastore-dt/ietf-datastores.yang \
+	  ietf-yang-library.yang
 
 back.xml: back.xml.src
 	./mk-back $< > $@
@@ -58,7 +73,7 @@ back.xml: back.xml.src
 $(next).xml: $(draft).xml
 	sed -e"s/$(basename $<)-latest/$(basename $@)/" $< > $@
 
-$(draft).xml: back.xml $(trees) ietf-yang-library.yang
+$(draft).xml: back.xml $(trees) $(load) ietf-yang-library.yang
 
 .INTERMEDIATE: $(draft).xml
 %.xml: %.md
