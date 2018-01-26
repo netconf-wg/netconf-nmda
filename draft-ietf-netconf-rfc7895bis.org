@@ -6,7 +6,7 @@ management server. Simple caching mechanisms are provided to allow
 clients to minimize retrieval of this information. This version of the
 YANG library supports the Network Management Datastore Architecture by
 listing all datastores supported by a network management server and
-the schema that is used by these datastores.
+the schema that is used by each of these datastores.
 
 This document obsoletes RFC 7895.
 
@@ -22,19 +22,24 @@ provides this informaton. This version of the YANG library is
 compatible with the Network Management Datastore Architecture (NMDA)
 ^I-D.ietf-netmod-revised-datastores^. The previous version of the YANG
 library, defined in ^RFC7895^, is not compatible with the NMDA since
-it assumes that all datastores have exactly the same schema. This is
-not generally true in the NMDA since dynamic configuration datastores
-may have their own datastore schema.  Furthermore, the the operational
+it assumes that all datastores have exactly the same schema.  This is
+not necessarily true in the NMDA since dynamic configuration datastores
+may have their own datastore schema.  Furthermore, the operational
 state datastore may support non-configurable YANG modules in addition
 to the YANG modules supported by conventional configuration
-datastores. The old YANG library definitions have been retained (for
-backwards compability reasons) but the definitions have been marked as
+datastores.
+
+The old YANG library definitions have been retained (for backwards
+compability reasons) but the definitions have been marked as
 deprecated. For backwards compatability, an NMDA-supporting server
 SHOULD populate the deprecated "/modules-state" tree in a
 backwards-compatible manner.  The new "/yang-library" tree would be
 ignored by legacy clients, while providing all the data needed for
 NMDA-aware clients, which would themselves ignore the "/modules-state"
-tree.
+tree.  The recommended approach to populate /modules-state is to
+report the schema for YANG modules that are configurable via
+conventional datastores and for which config false data nodes are
+returned via a NETCONF <get> operation, or equivalent.
 
 The YANG library information can be different on every server and it
 can change at runtime or across a server reboot. If a server
@@ -157,7 +162,7 @@ is used.
 The "ietf-yang-library" YANG module provides information about the
 modules, submodules, datastores, and datastore schemas supported by a
 server. All data nodes in "ietf-yang-library" are "config false", and
-thus accessible in the operational state datastore.
+thus only accessible in the operational state datastore.
 
 # use @ to bypass oxtradoc in order to get numbered figures
 #+BEGIN_EXAMPLE
@@ -182,7 +187,7 @@ schema. A datastore schema is a union of module sets and every module
 set is a collection of modules and submodules, including the modules
 and submodules used for imports. Note that multiple datastores may
 refer to the same datastore schema. Furthermore, it is possible that
-datastore schemas share module sets. A common use case is an
+individual datastore schema share module sets. A common use case is the
 operational state datastore schema which is a superset of the schema
 used by conventional configuration datastores.
 

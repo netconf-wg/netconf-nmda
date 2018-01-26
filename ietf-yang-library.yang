@@ -357,6 +357,16 @@ module ietf-yang-library {
     description
       "Generated when any YANG library information on the
        server has changed.";
+
+    leaf checksum {
+      type leafref {
+        path "/yanglib:yang-library/yanglib:checksum";
+      }
+      mandatory true;
+      description
+        "Contains the YANG library checksum for the updated YANG
+         library at the time the notification is generated.";
+    }
   }
 
   /*
