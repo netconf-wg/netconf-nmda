@@ -61,7 +61,7 @@ module ietf-yang-library {
   // and remove this note.
   // RFC Ed.: replace XXXX with actual RFC number and remove this
   // note.
-  revision 2018-01-19 {
+  revision 2018-01-26 {
     description
       "Added support for multiple datastores according to the
        Network Management Datastore Architecture (NMDA).";
@@ -288,7 +288,10 @@ module ietf-yang-library {
           path "../../module-set/name";
         }
         description
-          "A set of module-sets that are included in this schema.";
+          "A set of module-sets that are included in this schema.
+           If a non-import module appears in multiple module sets,
+           then the module revision and the associated features
+           and deviations must be identical.";
       }
     }
 
@@ -316,7 +319,9 @@ module ietf-yang-library {
         }
         mandatory true;
         description
-          "A reference to the schema supported by this datastore.";
+          "A reference to the schema supported by this datastore.
+           All non-import modules of the schema are implemented
+           with their associated features and deviations.";
       }
     }
   }

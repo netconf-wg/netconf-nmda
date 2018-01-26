@@ -1,4 +1,4 @@
-# -*- org -*-
+<# -*- org -*-
 
 This document describes a YANG library that provides information about
 the YANG modules, datastores, and datastore schemas used by a network
@@ -24,9 +24,10 @@ compatible with the Network Management Datastore Architecture (NMDA)
 library, defined in ^RFC7895^, is not compatible with the NMDA since
 it assumes that all datastores have exactly the same schema. This is
 not generally true in the NMDA since dynamic configuration datastores
-may have their own datastore schema. In addition, the operational
-state datastore may support additional non-configurable YANG
-modules. The old YANG library definitions have been retained (for
+may have their own datastore schema.  Furthermore, the the operational
+state datastore may support non-configurable YANG modules in addition
+to the YANG modules supported by conventional configuration
+datastores. The old YANG library definitions have been retained (for
 backwards compability reasons) but the definitions have been marked as
 deprecated. For backwards compatability, an NMDA-supporting server
 SHOULD populate the deprecated "/modules-state" tree in a
@@ -87,6 +88,9 @@ The following terms are used within this document:
 
 - YANG library: A collection of YANG modules, submodules, datastores,
   and datastore schemas used by a server.
+
+- YANG library checksum: A server-generated checksum of the contents
+  of the YANG library.
 
 Tree diagrams used in this document use the notation defined in
 ^I-D.ietf-netmod-yang-tree-diagrams^.
@@ -225,13 +229,13 @@ container has the following child nodes:
   notification.
 
 Note that for a NETCONF server implementing the NETCONF extensions to
-support the NMDA ^I-D.ietf-netconf-nmda-netconf^, a change of the
-"checksum" value results in a new value for the :yang-library:1.1
+support the NMDA ^I-D.ietf-netconf-nmda-netconf^, a change of the YANG
+library checksum results in a new value for the :yang-library:1.1
 capability defined in ^I-D.ietf-netconf-nmda-netconf^.  Thus, if such
 a server implements NETCONF notifications ^RFC5277^, and the
 notification "netconf-capability-change" ^RFC6470^, a
 "netconf-capability-change" notification is generated whenever the
-"checksum" changes.
+YANG library checksum changes.
 
 * YANG Library YANG Module @library-module@
 
@@ -244,7 +248,7 @@ library supports the YANG modules written in any version of YANG.
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
 
-!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2018-01-19.yang"
+!! include-figure ietf-yang-library.yang extract-to="ietf-yang-library@2018-01-26.yang"
 
 * IANA Considerations @iana@
 
