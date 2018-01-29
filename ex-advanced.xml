@@ -1,0 +1,140 @@
+<data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+<yang-library
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
+    xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores"
+    xmlns:example-ds-ephemeral="urn:example:ds-ephemeral">
+
+  <module-set>
+    <name>config-state-modules</name>
+    <module>
+      <name>ietf-interfaces</name>
+      <revision>2018-01-09</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-interfaces</namespace>
+    </module>
+    <module>
+      <name>ietf-ip</name>
+      <revision>2018-01-09</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-ip</namespace>
+    </module>
+    <module>
+      <name>ietf-routing</name>
+      <revision>2018-01-25</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-routing</namespace>
+    </module>
+    <import-only-module>
+      <name>ietf-yang-types</name>
+      <revision>2013-07-15</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-inet-types</name>
+      <revision>2013-07-15</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+    </import-only-module>
+  </module-set>
+
+  <module-set>
+    <name>config-only-modules</name>
+    <module>
+      <name>ietf-routing</name>
+      <revision>2018-01-25</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-routing</namespace>
+    </module>
+  </module-set>
+
+  <module-set>
+    <name>dynamic-config-state-modules</name>
+    <module>
+      <name>ietf-network</name>
+      <revision>2017-12-18</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-network</namespace>
+    </module>
+    <module>
+      <name>ietf-network-topology</name>
+      <revision>2017-12-18</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-network-topology</namespace>
+    </module>
+    <import-only-module>
+      <name>ietf-inet-types</name>
+      <revision>2013-07-15</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+    </import-only-module>
+  </module-set>
+
+  <module-set>
+    <name>state-only-modules</name>
+    <module>
+      <name>ietf-hardware</name>
+      <revision>2018-12-18</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-hardware</namespace>
+    </module>
+    <module>
+      <name>ietf-routing</name>
+      <revision>2018-01-25</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-routing</namespace>
+      <feature>multiple-ribs</feature>
+      <feature>router-id</feature>
+    </module>
+    <import-only-module>
+      <name>ietf-inet-types</name>
+      <revision>2013-07-15</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-yang-types</name>
+      <revision>2013-07-15</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>iana-hardware</name>
+      <revision>2017-12-18</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:ietf:params:xml:ns:yang:iana-hardware</namespace>
+    </import-only-module>
+  </module-set>
+
+  <module-set>
+    <name>state-only-vendor-deviation-modules</name>
+    <module>
+      <name>example-vendor-hardware-deviations</name>
+      <revision>2018-01-31</revision> <!-- RFC Ed. update this -->
+      <namespace>urn:example:example-vendor-hardware-deviations</namespace>
+    </module>
+  </module-set>
+  
+  <schema>
+    <name>config-schema</name>
+    <module-set>config-state-modules</module-set>
+    <module-set>config-only-modules</module-set>
+  </schema>
+  <schema>
+    <name>dynamic-config-schema</name>
+    <module-set>dynamic-config-state-modules</module-set>
+  </schema>
+  <schema>
+    <name>state-schema</name>
+    <module-set>config-state-modules</module-set>
+    <module-set>dynamic-config-state-modules</module-set>
+    <module-set>state-only-modules</module-set>
+    <module-set>state-only-vendor-deviation-modules</module-set>
+  </schema>
+
+  <datastore>
+    <name>ds:startup</name>
+    <schema>config-schema</schema>
+  </datastore>
+  <datastore>
+    <name>ds:running</name>
+    <schema>config-schema</schema>
+  </datastore>
+  <datastore>
+    <name>example-ds-ephemeral:ds-ephemeral</name>
+    <schema>dynamic-config-schema</schema>
+  </datastore>
+  <datastore>
+    <name>ds:operational</name>
+    <schema>state-schema</schema>
+  </datastore>
+
+  <checksum>14782ab9bd56b92aacc156a2958fbe12312fb285</checksum>
+</yang-library>
+</data>

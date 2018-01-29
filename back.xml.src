@@ -48,5 +48,9 @@
 
   ietf-ref:I-D.ietf-netmod-schema-mount
 
+  ietf-ref:I-D.ietf-netmod-rfc8022bis
+
+  ietf-ref:I-D.ietf-i2rs-yang-network-topo
+
 </references>
 
