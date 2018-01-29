@@ -376,24 +376,25 @@ Newlines in leaf values are added for formatting reasons.
 The following example extends the preceding Basic Server YANG Libary
 example, by using modules from ^I-D.ietf-netmod-rfc8022bis^ and
 ^I-D.ietf-i2rs-yang-network-topo^, to illustrate a slightly more
-advanced server that supports:
+advanced server that:
 
-- a module with features only enabled in <operational>.  i.e.  the
-  ietf-routing module is supported in <running>, <startup>, and
-  <operational>, but the 'multiple-ribs' and 'router-id' features are
-  only enabled in <operational>.  Hence the 'router-id' leaf may be
+- Has a module with features only enabled in <operational>; the
+  "ietf-routing module" is supported in <running>, <startup>, and
+  <operational>, but the "multiple-ribs" and "router-id" features are
+  only enabled in <operational>.  Hence the "router-id" leaf may be
   read but not configured.
 
-- support for a dynamic configuration datastore, with only the
-  ietf-network and ietf-network-topology modules configurable via a
-  notional dynamic configuration protocol.
+- Supports a dynamic configuration datastore
+  "example-ds-ephemeral", with only the "ietf-network" and
+  "ietf-network-topology" modules configurable via a notional dynamic
+  configuration protocol.
 
-- an example of datastore specific deviations, e.g. the
-  'example-vendor-hardware-deviation' module that is only included in
+- Shows an example of datastore specific deviations.  The module
+  "example-vendor-hardware-deviations" is included in
   the schema for <operational> to remove data nodes that cannot be
   supported by the server.
 
-- how module-sets can be used to organize related modules together.
+- Shows how module-sets can be used to organize related modules together.
 
 !! include-figure ex-advanced.load
 

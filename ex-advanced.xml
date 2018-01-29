@@ -2,7 +2,7 @@
 <yang-library
     xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
     xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores"
-    xmlns:example-ds-ephemeral="urn:example:ds-ephemeral">
+    xmlns:ex-ds-eph="urn:example:ds-ephemeral">
 
   <module-set>
     <name>config-state-modules</name>
@@ -72,8 +72,12 @@
       <name>ietf-routing</name>
       <revision>2018-01-25</revision> <!-- RFC Ed. update this -->
       <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-routing</namespace>
-      <feature>multiple-ribs</feature>
-      <feature>router-id</feature>
+      <feature>
+        <name>multiple-ribs</name>
+      </feature>
+      <feature>
+        <name>router-id</name>
+      </feature>
     </module>
     <import-only-module>
       <name>ietf-inet-types</name>
@@ -100,7 +104,7 @@
       <namespace><!-- PPL -->urn:example:example-vendor-hardware-deviations</namespace>
     </module>
   </module-set>
-  
+
   <schema>
     <name>config-schema</name>
     <module-set>config-state-modules</module-set>
@@ -127,7 +131,7 @@
     <schema>config-schema</schema>
   </datastore>
   <datastore>
-    <name>example-ds-ephemeral:ds-ephemeral</name>
+    <name>ex-ds-eph:ds-ephemeral</name>
     <schema>dynamic-config-schema</schema>
   </datastore>
   <datastore>

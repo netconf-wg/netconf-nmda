@@ -1,0 +1,16 @@
+module ex-ds-ephemeral {
+  yang-version 1.1;
+  namespace "urn:example:ds-ephemeral";
+  prefix ex-ds-eph;
+
+  import ietf-datastores {
+    prefix ds;
+  }
+
+  // this module is present for validation only.  not part of the document.
+
+  identity ds-ephemeral {
+    base ds:dynamic;
+  }
+}
+

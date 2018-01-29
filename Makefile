@@ -65,6 +65,11 @@ validate-ex-xml:
 	env YANG_MODPATH=../iana-if-type:$(YANG_MODPATH) \
 	  yang2dsdl -x -c -j -t data -v ex-basic.xml \
 	  ../../netmod-wg/datastore-dt/ietf-datastores.yang \
+	  ietf-yang-library.yang; \
+	env YANG_MODPATH=../iana-if-type:$(YANG_MODPATH) \
+	  yang2dsdl -x -c -j -t data -v ex-advanced.xml \
+	  ../../netmod-wg/datastore-dt/ietf-datastores.yang \
+	  ex-ds-ephemeral.yang \
 	  ietf-yang-library.yang
 
 back.xml: back.xml.src
