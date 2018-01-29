@@ -268,9 +268,9 @@ module ietf-yang-library {
       key name;
       description
         "A set of modules that may be used by one or more schemas.
-         
+
          A module set does not have to be referentially complete,
-         i.e. it may define modules which contain import statements
+         i.e., it may define modules that contain import statements
          for other modules not included in the module set.";
 
       uses module-set-parameters;
@@ -281,8 +281,8 @@ module ietf-yang-library {
       description
         "A datastore schema that may be used by one or more
          datastores.
-         
-         The schema must be valid and referentially complete, i.e. it
+
+         The schema must be valid and referentially complete, i.e., it
          must contain modules to satisfy all used import statements
          for all modules specified in the schema";
 
