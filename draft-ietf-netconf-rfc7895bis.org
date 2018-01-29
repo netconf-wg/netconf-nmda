@@ -132,9 +132,9 @@ application for each datastore supported by a server:
 In order to select one out of several possible data model designs, the
 following criteria were used:
 
-+ As efficient as possible for a client to consume.
-Since the size of the yang library can be quite large, it should
-be possible for clients to cache the yang library information.
++ Efficient for a client to consume.
+Since the size of the YANG library can be quite large, it should
+be possible for clients to cache the YANG library information.
 
 + A dynamic configuration datastore must be able to implement a module
 or feature that is not implemented in the conventional configuration
@@ -222,16 +222,16 @@ container has the following child nodes:
   datastore has a separate entry, pointing to the same "schema" list
   element.
 
-- The "/yang-library/checksum" leaf contains a unique
-  implementation-specific identifier representing the current
-  information in the YANG library on a specific server.  The value of
-  this leaf MUST change whenever the information in the YANG library
-  changes. There is no requirement that the same information always
-  results in the same "checksum" value. This leaf allows a client to
-  fetch all schema information once, cache it, and only refetch it if
-  the value of this leaf has been changed. If the value of this leaf
-  changes, the server also generates a "yang-library-update"
-  notification.
+- The "/yang-library/checksum" leaf contains the YANG library
+  checksum, which is a unique implementation-specific identifier
+  representing the current information in the YANG library on a
+  specific server.  The value of this leaf MUST change whenever the
+  information in the YANG library changes. There is no requirement
+  that the same information always results in the same "checksum"
+  value. This leaf allows a client to fetch all schema information
+  once, cache it, and only refetch it if the value of this leaf has
+  been changed. If the value of this leaf changes, the server also
+  generates a "yang-library-update" notification.
 
 Note that for a NETCONF server implementing the NETCONF extensions to
 support the NMDA ^I-D.ietf-netconf-nmda-netconf^, a change of the YANG
@@ -366,6 +366,8 @@ implementing the "ietf-interfaces" ^I-D.ietf-netmod-rfc7223bis^ and
 "ietf-ip" ^I-D.ietf-netmod-rfc7277bis^ modules in the <running>,
 <startup>, and <operational> datastores and the "ietf-hardware"
 ^I-D.ietf-netmod-entity^ module in the <operational> datastore.
+
+Newlines in leaf values are added for formatting reasons.
 
 !! include-figure ex-basic.load
 

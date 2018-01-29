@@ -8,22 +8,22 @@
     <module>
       <name>ietf-interfaces</name>
       <revision>2018-01-09</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-interfaces</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-interfaces</namespace>
     </module>
     <module>
       <name>ietf-ip</name>
       <revision>2018-01-09</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-ip</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-ip</namespace>
     </module>
     <import-only-module>
       <name>ietf-yang-types</name>
       <revision>2013-07-15</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
     </import-only-module>
     <import-only-module>
       <name>ietf-inet-types</name>
       <revision>2013-07-15</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
     </import-only-module>
   </module-set>
 
@@ -32,22 +32,22 @@
     <module>
       <name>ietf-hardware</name>
       <revision>2018-12-18</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-hardware</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-hardware</namespace>
     </module>
     <import-only-module>
       <name>ietf-inet-types</name>
       <revision>2013-07-15</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
     </import-only-module>
     <import-only-module>
       <name>ietf-yang-types</name>
       <revision>2013-07-15</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
     </import-only-module>
     <import-only-module>
       <name>iana-hardware</name>
       <revision>2017-12-18</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:iana-hardware</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:iana-hardware</namespace>
     </import-only-module>
   </module-set>
 
