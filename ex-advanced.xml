@@ -9,27 +9,27 @@
     <module>
       <name>ietf-interfaces</name>
       <revision>2018-01-09</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-interfaces</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-interfaces</namespace>
     </module>
     <module>
       <name>ietf-ip</name>
       <revision>2018-01-09</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-ip</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-ip</namespace>
     </module>
     <module>
       <name>ietf-routing</name>
       <revision>2018-01-25</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-routing</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-routing</namespace>
     </module>
     <import-only-module>
       <name>ietf-yang-types</name>
       <revision>2013-07-15</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
     </import-only-module>
     <import-only-module>
       <name>ietf-inet-types</name>
       <revision>2013-07-15</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
     </import-only-module>
   </module-set>
 
@@ -38,7 +38,7 @@
     <module>
       <name>ietf-routing</name>
       <revision>2018-01-25</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-routing</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-routing</namespace>
     </module>
   </module-set>
 
@@ -47,17 +47,17 @@
     <module>
       <name>ietf-network</name>
       <revision>2017-12-18</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-network</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-network</namespace>
     </module>
     <module>
       <name>ietf-network-topology</name>
       <revision>2017-12-18</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-network-topology</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-network-topology</namespace>
     </module>
     <import-only-module>
       <name>ietf-inet-types</name>
       <revision>2013-07-15</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
     </import-only-module>
   </module-set>
 
@@ -66,29 +66,29 @@
     <module>
       <name>ietf-hardware</name>
       <revision>2018-12-18</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-hardware</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-hardware</namespace>
     </module>
     <module>
       <name>ietf-routing</name>
       <revision>2018-01-25</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-routing</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-routing</namespace>
       <feature>multiple-ribs</feature>
       <feature>router-id</feature>
     </module>
     <import-only-module>
       <name>ietf-inet-types</name>
       <revision>2013-07-15</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
     </import-only-module>
     <import-only-module>
       <name>ietf-yang-types</name>
       <revision>2013-07-15</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
     </import-only-module>
     <import-only-module>
       <name>iana-hardware</name>
       <revision>2017-12-18</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:ietf:params:xml:ns:yang:iana-hardware</namespace>
+      <namespace><!-- PPL -->urn:ietf:params:xml:ns:yang:iana-hardware</namespace>
     </import-only-module>
   </module-set>
 
@@ -97,7 +97,7 @@
     <module>
       <name>example-vendor-hardware-deviations</name>
       <revision>2018-01-31</revision> <!-- RFC Ed. update this -->
-      <namespace>urn:example:example-vendor-hardware-deviations</namespace>
+      <namespace><!-- PPL -->urn:example:example-vendor-hardware-deviations</namespace>
     </module>
   </module-set>
   
