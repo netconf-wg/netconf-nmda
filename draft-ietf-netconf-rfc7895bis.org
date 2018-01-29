@@ -334,8 +334,7 @@ The Space & Terrestrial Communications Directorate (S&TCD).
 
 This document updates ^RFC7895^ in the following ways:
 
-- Renamed document title from "YANG Module Library" to "A YANG Data
-  Model for the YANG Library".
+- Renamed document title from "YANG Module Library" to "YANG Library".
 
 - Added a new top-level "/yang-library" container to hold the entire
   YANG library providing information about module sets, schemas, and
@@ -404,7 +403,7 @@ advanced server that:
     category std;
     references back.xml;
     obsoletes 7895;
-    title "A YANG Data Model for the YANG Library";
+    title "YANG Library";
     abbreviation "YANG Library";
     contributor "author:Andy Bierman:YumaWorks:andy@yumaworks.com";
     contributor "author:Martin Bjorklund:Tail-f Systems:mbj@tail-f.com";

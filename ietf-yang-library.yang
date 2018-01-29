@@ -66,7 +66,7 @@ module ietf-yang-library {
       "Added support for multiple datastores according to the
        Network Management Datastore Architecture (NMDA).";
     reference
-      "RFC XXXX: A YANG Data Model for the YANG Library.";
+      "RFC XXXX: YANG Library.";
   }
   revision 2016-04-09 {
     description
