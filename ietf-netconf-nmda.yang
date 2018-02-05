@@ -150,7 +150,7 @@ module ietf-netconf-nmda {
           "Filter for nodes with the given value for their
            'config' property.";
       }
-      leaf origin-filter {
+      leaf-list origin-filter {
         when 'derived-from-or-self(../datastore, "ds:operational")';
         if-feature origin;
         type identityref {
@@ -159,7 +159,7 @@ module ietf-netconf-nmda {
         description
           "Filter based on 'origin' annotation.  A node matches the
            filter if its 'origin' annotation is derived from or
-           equal to the given filter value.";
+           equal to any of the given filter values.";
       }
 
       leaf max-depth {
