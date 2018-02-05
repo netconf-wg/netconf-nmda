@@ -39,6 +39,10 @@ the NMDA to support ^I-D.ietf-netconf-rfc7895bis^.
 This document uses the terminology defined by the NMDA
 ^I-D.ietf-netmod-revised-datastores^.
 
+The following term is defined in ^I-D.ietf-netconf-rfc7895bis^:
+
+- YANG library checksum
+
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
 "OPTIONAL" in this document are to be interpreted as described in BCP
@@ -68,9 +72,8 @@ The parameter "revision" has the same value as the revision date of
 the "ietf-yang-library" module implemented by the server.  This
 parameter MUST be present.
 
-The parameter "checksum" has the same value as the leaf
-"/yang-library/checksum" from "ietf-yang-library".  This
-parameter MUST be present.
+The parameter "checksum" contains the YANG library checksum
+^I-D.ietf-netconf-rfc7895bis^.  This parameter MUST be present.
 
 With this mechanism, a client can cache the supported modules for a
 server and only update the cache if the "checksum" value in the
@@ -210,7 +213,7 @@ and ^I-D.ietf-netmod-revised-datastores^.
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
 
-!! include-figure ietf-netconf-nmda.yang extract-to="ietf-netconf-nmda@2018-01-17.yang"
+!! include-figure ietf-netconf-nmda.yang extract-to="ietf-netconf-nmda@2018-02-05.yang"
 
 * IANA Considerations
 

@@ -61,7 +61,7 @@ module ietf-netconf-nmda {
      (http://www.rfc-editor.org/info/rfcxxxx); see the RFC itself
      for full legal notices.";
 
-  revision 2018-01-17 {
+  revision 2018-02-05 {
     description
       "Initial revision.";
     reference
@@ -97,7 +97,11 @@ module ietf-netconf-nmda {
         type ds:datastore-ref;
         mandatory true;
         description
-          "Datastore from which to retrieve data.";
+          "Datastore from which to retrieve data.
+
+           If the datastore is not supported by the server, then the
+           server MUST return an <rpc-error> element with an
+           <error-tag> value of 'invalid-value'.";
       }
 
       choice filter-spec {
@@ -209,9 +213,10 @@ module ietf-netconf-nmda {
         description
           "Datastore which is the target of the edit-data operation.
 
-           If the target datastore is not writable, then the server
-           MUST return an <rpc-error> element with an <error-tag>
-           value of 'invalid-value'";
+           If the target datastore is not writable, or is not
+           supported by the server, then the server MUST return an
+           <rpc-error> element with an <error-tag> value of
+           'invalid-value'.";
       }
       leaf default-operation {
         type enumeration {
@@ -267,7 +272,7 @@ module ietf-netconf-nmda {
          If the lock operation is not supported by the server on the
          specified target datastore, then the server MUST return an
          <rpc-error> element with an <error-tag> value of
-         'invalid-value'";
+         'invalid-value'.";
     }
   }
   augment "/nc:unlock/nc:input/nc:target/nc:config-target" {
@@ -281,7 +286,7 @@ module ietf-netconf-nmda {
          If the unlock operation is not supported by the server on the
          specified target datastore, then the server MUST return an
          <rpc-error> element with an <error-tag> value of
-         'invalid-value'";
+         'invalid-value'.";
     }
   }
 
@@ -301,7 +306,7 @@ module ietf-netconf-nmda {
          If the validate operation is not supported by the server on
          the specified target datastore, then the server MUST return
          an <rpc-error> element with an <error-tag> value of
-         'invalid-value'";
+         'invalid-value'.";
 
     }
   }
