@@ -269,6 +269,8 @@ module ietf-netconf-nmda {
       description
         "Datastore to lock.
 
+         The lock operation is only supported on writable datastores.
+
          If the lock operation is not supported by the server on the
          specified target datastore, then the server MUST return an
          <rpc-error> element with an <error-tag> value of
@@ -282,6 +284,9 @@ module ietf-netconf-nmda {
       type ds:datastore-ref;
       description
         "Datastore to unlock.
+
+         The unlock operation is only supported on writable
+         datastores.
 
          If the unlock operation is not supported by the server on the
          specified target datastore, then the server MUST return an
@@ -302,6 +307,9 @@ module ietf-netconf-nmda {
       type ds:datastore-ref;
       description
         "Datastore to validate.
+
+         The validate operation is supported only on configuration
+         datastores.
 
          If the validate operation is not supported by the server on
          the specified target datastore, then the server MUST return
