@@ -121,8 +121,12 @@ for subtree filtering ("subtree-filter") and XPath filtering
 ("xpath-filter").
 
 The "config-filter" parameter can be used to retrieve only "config
-true" or "config false" nodes. The "origin-filter" can be used to
-select nodes matching any of a set of given "origin" values.
+true" or "config false" nodes.
+
+The "origin-filter" parameter can be used to select nodes matching any
+of a set of given "origin" values, and the "negated-origin-filter"
+parameter can be used to select nodes that do not match a set of given
+"origin" values.
 
 The "max-depth" parameter can be used by the client to limit the
 number of sub-tree levels that are returned in the reply.
