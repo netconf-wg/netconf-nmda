@@ -150,16 +150,32 @@ module ietf-netconf-nmda {
           "Filter for nodes with the given value for their
            'config' property.";
       }
-      leaf-list origin-filter {
-        when 'derived-from-or-self(../datastore, "ds:operational")';
-        if-feature origin;
-        type identityref {
-          base or:origin;
-        }
+      choice origin-filters {
         description
-          "Filter based on 'origin' annotation.  A node matches the
-           filter if its 'origin' annotation is derived from or
-           equal to any of the given filter values.";
+          "Filters based on the 'origin' annotation.";
+
+        leaf-list origin-filter {
+          when 'derived-from-or-self(../datastore,"ds:operational")';
+          if-feature origin;
+          type identityref {
+            base or:origin;
+          }
+          description
+            "Filter based on the 'origin' annotation.  A node matches
+             the filter if its 'origin' annotation is derived from or
+             equal to any of the given filter values.";
+        }
+        leaf-list negated-origin-filter {
+          when 'derived-from-or-self(../datastore,"ds:operational")';
+          if-feature origin;
+          type identityref {
+            base or:origin;
+          }
+          description
+            "Filter based on the 'origin' annotation.  A node matches
+             the filter if its 'origin' annotation is not derived
+             from and not equal to all of the given filter values.";
+        }
       }
 
       leaf max-depth {
@@ -269,6 +285,8 @@ module ietf-netconf-nmda {
       description
         "Datastore to lock.
 
+         The lock operation is only supported on writable datastores.
+
          If the lock operation is not supported by the server on the
          specified target datastore, then the server MUST return an
          <rpc-error> element with an <error-tag> value of
@@ -283,9 +301,12 @@ module ietf-netconf-nmda {
       description
         "Datastore to unlock.
 
-         If the unlock operation is not supported by the server on the
-         specified target datastore, then the server MUST return an
-         <rpc-error> element with an <error-tag> value of
+         The unlock operation is only supported on writable
+         datastores.
+
+         If the unlock operation is not supported by the server on
+         the specified target datastore, then the server MUST return
+         an <rpc-error> element with an <error-tag> value of
          'invalid-value'.";
     }
   }
@@ -302,6 +323,9 @@ module ietf-netconf-nmda {
       type ds:datastore-ref;
       description
         "Datastore to validate.
+
+         The validate operation is supported only on configuration
+         datastores.
 
          If the validate operation is not supported by the server on
          the specified target datastore, then the server MUST return

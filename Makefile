@@ -79,7 +79,7 @@ example-system.oper.yang: example-system.yang
 validate: validate-std-yang validate-ex-yang
 
 validate-std-yang:
-	${PYANG} ${PYANGFLAGS} --ietf ${std_yang}
+	${PYANG} ${PYANGFLAGS} --ietf --max-line-length 69 ${std_yang}
 
 validate-ex-yang:
 ifneq (,${ex_yang})
