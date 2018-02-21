@@ -151,12 +151,12 @@ module ietf-netconf-nmda {
            'config' property.";
       }
       choice origin-filters {
+        when 'derived-from-or-self(datastore, "ds:operational")';
+        if-feature origin;
         description
           "Filters based on the 'origin' annotation.";
 
         leaf-list origin-filter {
-          when 'derived-from-or-self(../datastore,"ds:operational")';
-          if-feature origin;
           type identityref {
             base or:origin;
           }
@@ -166,8 +166,6 @@ module ietf-netconf-nmda {
              equal to any of the given filter values.";
         }
         leaf-list negated-origin-filter {
-          when 'derived-from-or-self(../datastore,"ds:operational")';
-          if-feature origin;
           type identityref {
             base or:origin;
           }

@@ -144,19 +144,19 @@ server, then the "with-defaults" parameter is supported for
 <get-data> operations that target <operational>.  The behavior of the
 "with-defaults" parameter for <operational> is defined as below:
 
- - If no "with-defaults" parameter is specifed, or if it is set to
-   "explicit", "report-all", or "report-all-tagged", then the "in use"
-   values, as defined in ^I-D.ietf-netmod-revised-datastores^ section
-   5.3, are returned from the operational state datastore, even if a
-   node happens to have a default statement in the YANG module, and
-   this default value is being used by the server.  If the
-   "with-defaults" parameter is set to "report-all-tagged", any values
-   that match the schema default are tagged with additional metadata,
-   as described in ^RFC6243^ section 3.4.
+- If no "with-defaults" parameter is specifed, or if it is set to
+  "explicit", "report-all", or "report-all-tagged", then the "in use"
+  values, as defined in ^I-D.ietf-netmod-revised-datastores^ section
+  5.3, are returned from the operational state datastore, even if a
+  node happens to have a default statement in the YANG module, and
+  this default value is being used by the server.  If the
+  "with-defaults" parameter is set to "report-all-tagged", any values
+  that match the schema default are tagged with additional metadata,
+  as described in ^RFC6243^ section 3.4.
 
- - If the "with-defaults" parameter is set to "trim", all "in use"
-   values are returned, except that the output is filtered to exclude
-   any values that match the default defined in the YANG schema.
+- If the "with-defaults" parameter is set to "trim", all "in use"
+  values are returned, except that the output is filtered to exclude
+  any values that match the default defined in the YANG schema.
 
 Support for "with-defaults" in <get-data> operations on any datastore
 not defined in ^I-D.ietf-netmod-revised-datastores^ SHOULD be defined
@@ -252,22 +252,27 @@ remove this note.
 This document registers three capability identifier URNs in the "Network
 Configuration Protocol (NETCONF) Capability URNs" registry:
 
+  Index
+  Capability Identifier
+  -----------------------
+  :yang-library
+  urn:ietf:params:netconf:capability:yang-library:1.1
 
-  Index                       Capability Identifier
-  -------------               ---------------------------------------------------
-  :yang-library               urn:ietf:params:netconf:capability:yang-library:1.1
-  :with-origin                urn:ietf:params:netconf:capability:with-origin:1.0
-  :with-operational-defaults  urn:ietf:params:netconf:capability:with-opererational-defaults:1.0
+  :with-origin
+  urn:ietf:params:netconf:capability:with-origin:1.0
+
+  :with-operational-defaults
+  urn:ietf:params:netconf:capability:with-opererational-defaults:1.0
 
 This document registers a URI in the "IETF XML Registry" ^RFC3688^.
 Following the format in RFC 3688, the following registration has been
 made.
 
-    URI: urn:ietf:params:xml:ns:yang:ietf-netconf-nmda
+  URI: urn:ietf:params:xml:ns:yang:ietf-netconf-nmda
 
-    Registrant Contact: The IESG.
+  Registrant Contact: The IESG.
 
-    XML: N/A, the requested URI is an XML namespace.
+  XML: N/A, the requested URI is an XML namespace.
 
 This document registers a YANG module in the "YANG Module Names"
 registry ^RFC6020^.
