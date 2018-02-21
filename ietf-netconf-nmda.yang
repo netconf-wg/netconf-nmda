@@ -76,6 +76,19 @@ module ietf-netconf-nmda {
       "RFC XXXX: Network Management Datastore Architecture";
   }
 
+  feature with-defaults {
+    description
+       "NETCONF :with-defaults capability; If the server advertises
+        the :with-defaults capability for a session, then this
+        feature must also be enabled for that session.  Otherwise,
+        this feature must not be enabled.";
+    reference
+      "RFC 6243: With-defaults Capability for NETCONF, section 4; and
+       RFC XXXX: NETCONF Extensions to Support the Network Management
+       Datastore Architecture, section 3.1.1.1.";
+  }
+
+
   rpc get-data {
     description
       "Retrieve data from an NMDA datastore. The content returned
@@ -87,10 +100,12 @@ module ietf-netconf-nmda {
        then the server MUST return an <rpc-error> element with an
        <error-tag> value of 'invalid-value'.
 
-       The 'with-defaults' parameter does not apply to operational
-       datastores. If the 'with-defaults' parameter is present in a
-       request to an operational datastore, then the server MUST
-       return an <rpc-error> element with an <error-tag> value of
+       The 'with-defaults' parameter only applies to the operational
+       datastore if the NETCONF :with-defaults and
+       :with-operational-defaults capabilities are both advertised.
+       If the 'with-defaults' parameter is present in a request for
+       which it is not supported, then the server MUST return an
+       <rpc-error> element with an <error-tag> value of
        'invalid-value'.";
     input {
       leaf datastore {
@@ -203,8 +218,9 @@ module ietf-netconf-nmda {
            the 'origin' annotation for the nodes that has one.";
       }
 
-      uses ncwd:with-defaults-parameters;
-
+      uses ncwd:with-defaults-parameters {
+        if-feature with-defaults;
+      }
     }
 
     output {

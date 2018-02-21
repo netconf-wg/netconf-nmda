@@ -139,9 +139,16 @@ If the "with-defaults" capability is supported by the server, then the
 <get-data> operations that target conventional configuration
 datastores.
 
-If the "with-operational-defaults" capability is supported by the
-server, then the "with-defaults" parameter is supported for
-<get-data> operations that target <operational>.  The behavior of the
+The "with-defaults" parameter is optional to support for <get-data>
+operations that target <operational>.  The associated capability to
+indicate a server's support is identified with the URI:
+
+  urn:ietf:params:netconf:capability:with-operational-defaults:1.0
+
+If the "with-defaults" parameter is supported for <get-data>
+operations on <operational>, then all retrieval modes specified in
+either the 'basic-mode' or 'also-supported' parameters of the
+"with-defaults" capability are permitted.  The behavior of the
 "with-defaults" parameter for <operational> is defined as below:
 
 - If no "with-defaults" parameter is specifed, or if it is set to
