@@ -104,14 +104,14 @@ ${output}.txt: ${output}.xml
 
 .INTERMEDIATE: $(trees)
 get-data.tree: ietf-netconf-nmda.yang
-	${PYANG} ${PYANGFLAGS} -f tree --tree-line-length 68 \
+	${PYANG} ${PYANGFLAGS} -f tree --tree-line-length 72 \
 	  --tree-path /get-data $< | awk '/rpcs/ { s=1; next;} \
-	  s==0 { next; } {print}' > $@
+	  s==0 { next; } {print}' | sed 's/^    //' > $@
 
 edit-data.tree: ietf-netconf-nmda.yang
-	${PYANG} ${PYANGFLAGS} -f tree --tree-line-length 68 \
+	${PYANG} ${PYANGFLAGS} -f tree --tree-line-length 72 \
 	  --tree-path /edit-data $< | awk '/rpcs/ { s=1; next;} \
-	  s==0 { next; } {print}' > $@
+	  s==0 { next; } {print}' | sed 's/^    //' > $@
 
 ${output}.html: ${draft}
 	@echo "Generating $@ ..."

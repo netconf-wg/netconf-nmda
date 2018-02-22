@@ -172,18 +172,14 @@ module ietf-netconf-nmda {
           "Filters based on the 'origin' annotation.";
 
         leaf-list origin-filter {
-          type identityref {
-            base or:origin;
-          }
+          type or:origin-ref;
           description
             "Filter based on the 'origin' annotation.  A node matches
              the filter if its 'origin' annotation is derived from or
              equal to any of the given filter values.";
         }
         leaf-list negated-origin-filter {
-          type identityref {
-            base or:origin;
-          }
+          type or:origin-ref;
           description
             "Filter based on the 'origin' annotation.  A node matches
              the filter if its 'origin' annotation is not derived
