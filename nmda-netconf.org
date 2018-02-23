@@ -269,7 +269,7 @@ Configuration Protocol (NETCONF) Capability URNs" registry:
   urn:ietf:params:netconf:capability:with-origin:1.0
 
   :with-operational-defaults
-  urn:ietf:params:netconf:capability:with-opererational-defaults:1.0
+  urn:ietf:params:netconf:capability:with-operational-defaults:1.0
 
 This document registers a URI in the "IETF XML Registry" ^RFC3688^.
 Following the format in RFC 3688, the following registration has been
