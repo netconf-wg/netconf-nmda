@@ -252,7 +252,7 @@ and ^I-D.ietf-netmod-revised-datastores^.
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
 
-!! include-figure ietf-netconf-nmda.yang extract-to="ietf-netconf-nmda@2018-02-05.yang"
+!! include-figure ietf-netconf-nmda.yang extract-to="ietf-netconf-nmda@2018-02-23.yang"
 
 * IANA Considerations
 
