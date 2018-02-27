@@ -5,21 +5,29 @@ module ietf-netconf-nmda {
 
   import ietf-yang-types {
     prefix yang;
+    reference "RFC 6991: Common YANG Data Types.";
   }
   import ietf-inet-types {
     prefix inet;
+    reference "RFC 6991: Common YANG Data Types.";
   }
   import ietf-datastores {
     prefix ds;
+    // RFC Ed.: update the reference below with the actual RFC number
+    reference "RFC XXXX: Network Management Datastore Architecture.";
   }
   import ietf-origin {
     prefix or;
+    // RFC Ed.: update the reference below with the actual RFC number
+    reference "RFC XXXX: Network Management Datastore Architecture.";
   }
   import ietf-netconf {
     prefix nc;
+    reference "RFC 6241: Network Configuration Protocol (NETCONF)";
   }
   import ietf-netconf-with-defaults {
     prefix ncwd;
+    reference "RFC 6243: With-defaults Capability for NETCONF.";
   }
 
   organization
