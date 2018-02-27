@@ -248,6 +248,7 @@ module ietf-netconf-nmda {
     input {
       leaf datastore {
         type ds:datastore-ref;
+        mandatory true;
         description
           "Datastore which is the target of the edit-data operation.
 

@@ -198,6 +198,15 @@ with the URI:
 
   urn:ietf:params:netconf:capability:with-origin:1.0
 
+**** Example: Retrieving an entire subtree from <running>
+
+The following example shows the <get-data> version of the <get-config>
+example shown in Section 7.1 of ^RFC6241^.
+
+!! include-figure ex-get-data-req.xml
+
+!! include-figure ex-get-data-reply.xml
+
 *** The <edit-data> Operation
 
 The <edit-data> operation changes the contents of a writable
@@ -233,6 +242,19 @@ Semantics for "with-defaults" in <edit-data> operations on any non
 conventional configuration datastores SHOULD be defined by the
 specification for the datastore.
 
+**** Example: Setting a leaf of an interface in <running>
+
+The following example shows the <edit-data> version of the first
+<edit-config> example in Section 7.2 of ^RFC6241^, setting the
+MTU to 1500 on an interface named "Ethernet0/0" in the running
+configuration datastore.
+
+!! include-figure ex-edit-data-req.xml
+
+!! include-figure ex-edit-data-reply.xml
+
+The other <edit-config> examples shown in Section 7.2 can be
+translated to <edit-data> examples in a similar way.
 
 ** Augmentations to NETCONF Operations
 

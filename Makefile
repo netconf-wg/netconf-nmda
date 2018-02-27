@@ -76,7 +76,7 @@ clean:
 example-system.oper.yang: example-system.yang
 	grep -v must $< > $@
 
-validate: validate-std-yang validate-ex-yang
+validate: validate-std-yang validate-ex-yang validate-ex-xml
 
 validate-std-yang:
 	${PYANG} ${PYANGFLAGS} --ietf --max-line-length 69 ${std_yang}
@@ -85,6 +85,24 @@ validate-ex-yang:
 ifneq (,${ex_yang})
 	${PYANG} ${PYANGFLAGS} --canonical --max-line-length 69 ${ex_yang}
 endif
+
+validate-ex-xml:
+	env YANG_MODPATH=../../netmod-wg/datastore-dt:$(YANG_MODPATH) \
+	  yang2dsdl -x -c -j -t rpc -v ex-get-data-req.xml \
+	  ../../netmod-wg/datastore-dt/ietf-datastores.yang \
+	  ietf-netconf-nmda.yang || exit 1; \
+	env YANG_MODPATH=../../netmod-wg/datastore-dt:$(YANG_MODPATH) \
+	  yang2dsdl -x -c -j -t rpc-reply -v ex-get-data-reply.xml \
+	  ../../netmod-wg/datastore-dt/ietf-datastores.yang \
+	  ietf-netconf-nmda.yang || exit 1; \
+	env YANG_MODPATH=../../netmod-wg/datastore-dt:$(YANG_MODPATH) \
+	  yang2dsdl -x -c -j -t rpc -v ex-edit-data-req.xml \
+	  ../../netmod-wg/datastore-dt/ietf-datastores.yang \
+	  ietf-netconf-nmda.yang || exit 1; \
+	env YANG_MODPATH=../../netmod-wg/datastore-dt:$(YANG_MODPATH) \
+	  yang2dsdl -x -c -j -t rpc-reply -v ex-edit-data-reply.xml \
+	  ../../netmod-wg/datastore-dt/ietf-datastores.yang \
+	  ietf-netconf-nmda.yang || exit 1
 
 ${references_xml}: ${references_src}
 	${OXTRADOC} -m mkback $< > $@
@@ -96,7 +114,7 @@ ${output}.xml: ${draft}.xml
 ${output}.xml: back.xml $(trees) $(load) $(yang)
 endif
 
-${output}.xml : ${draft} ${references_xml} ${trees} ${yang}
+${output}.xml : ${draft} ${references_xml} ${trees} ${yang} ${examples}
 	${OXTRADOC} -m outline-to-xml -n "${output}" $< > $@
 
 ${output}.txt: ${output}.xml

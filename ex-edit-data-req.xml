@@ -1,0 +1,16 @@
+<rpc message-id="102"
+     xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <edit-data xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-nmda"
+             xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
+    <datastore>ds:running</datastore>
+    <config>
+      <top xmlns="http://example.com/schema/1.2/config">
+        <interface>
+          <name>Ethernet0/0</name>
+          <mtu>1500</mtu>
+        </interface>
+      </top>
+    </config>
+  </edit-data>
+</rpc>
+
