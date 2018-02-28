@@ -194,9 +194,7 @@ the value matches that of the parent node, as described in the
 "ietf-origin" YANG module ^I-D.ietf-netmod-revised-datastores^.
 
 The "with-origin" parameter is optional to support.  It is identified
-with the URI:
-
-  urn:ietf:params:netconf:capability:with-origin:1.0
+with the feature "origin".
 
 **** Example: Retrieving an entire subtree from <running>
 
@@ -279,7 +277,7 @@ remove this note.
 
 * IANA Considerations
 
-This document registers three capability identifier URNs in the "Network
+This document registers two capability identifier URNs in the "Network
 Configuration Protocol (NETCONF) Capability URNs" registry:
 
   Index
@@ -287,9 +285,6 @@ Configuration Protocol (NETCONF) Capability URNs" registry:
   ---------------------
   :yang-library
   urn:ietf:params:netconf:capability:yang-library:1.1
-
-  :with-origin
-  urn:ietf:params:netconf:capability:with-origin:1.0
 
   :with-operational-defaults
   urn:ietf:params:netconf:capability:with-operational-defaults:1.0
