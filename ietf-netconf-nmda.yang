@@ -73,7 +73,7 @@ module ietf-netconf-nmda {
   // and remove this note.
   // RFC Ed.: replace XXXX with actual RFC number and remove this
   // note.
-  revision 2018-02-23 {
+  revision 2018-02-28 {
     description
       "Initial revision.";
     reference
@@ -244,7 +244,13 @@ module ietf-netconf-nmda {
 
   rpc edit-data {
     description
-      "Edit data in an NMDA datastore.";
+      "Edit data in an NMDA datastore.
+
+       If an error condition occurs such that an error severity
+       <rpc-error> element is generated, the server will stop
+       processing the <edit-data> operation and restore the
+       specified configuration to its complete state at
+       the start of this <edit-data> operation.";
     input {
       leaf datastore {
         type ds:datastore-ref;

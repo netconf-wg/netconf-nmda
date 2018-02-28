@@ -232,7 +232,8 @@ YANG 1.1) while the "config" element in the "edit-content" choice of
 
 The <edit-data> operation does not support the "error-option" and the
 "test-option" parameters that were part of the <edit-config>
-operation.
+operation. The error behaviour of <edit-data> corresponds to the
+"error-option" "rollback-on-error".
 
 If the "with-defaults" capability is supported by the server, the
 semantics of editing modes is the same as for <edit-config>, as
@@ -274,7 +275,7 @@ and ^I-D.ietf-netmod-revised-datastores^.
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
 
-!! include-figure ietf-netconf-nmda.yang extract-to="ietf-netconf-nmda@2018-02-23.yang"
+!! include-figure ietf-netconf-nmda.yang extract-to="ietf-netconf-nmda@2018-02-28.yang"
 
 * IANA Considerations
 
