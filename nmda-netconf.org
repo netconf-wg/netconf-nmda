@@ -4,7 +4,7 @@
 
 This document extends the NETCONF protocol defined in RFC 6241 in
 order to support the Network Management Datastore Architecture
-defined in I-D.ietf-netmod-revised-datastores.
+defined in RFC 8342.
 
 This document updates both RFC 6241 and RFC 7950.  The update to
 RFC 6241 adds new operations <get-data> and <edit-data>, and
@@ -13,14 +13,14 @@ The update to RFC 7950 requires the usage of I-D.ietf-netconf-rfc7895bis
 by NETCONF servers implementing the Network Management Datastore
 Architecture.
 
-REF Editor: please replace "I-D.ietf-netmod-revised-datastores" and
-"I-D.ietf-netconf-rfc7895bis" above with their final RFC assignments.
+RFC Ed.: Please replace "I-D.ietf-netconf-rfc7895bis" above with
+its final RFC assignment and remove this note.
 
 * Introduction
 
 This document extends the NETCONF protocol defined in ^RFC6241^ in
 order to support the Network Management Datastore Architecture (NMDA)
-defined in ^I-D.ietf-netmod-revised-datastores^.
+defined in ^RFC8342^.
 
 This document updates ^RFC6241^ in order to enable NETCONF clients to
 interact with all the datastores supported by a server implementing
@@ -37,7 +37,7 @@ the NMDA to support ^I-D.ietf-netconf-rfc7895bis^.
 ** Terminology
 
 This document uses the terminology defined by the NMDA
-^I-D.ietf-netmod-revised-datastores^.
+^RFC8342^.
 
 The following term is defined in ^I-D.ietf-netconf-rfc7895bis^:
 
@@ -92,7 +92,7 @@ NMDA.  These changes are defined in a new YANG (^RFC7950^) module
 
 These changes include the use of source and target parameters based on
 the "datastore" identity defined in the "ietf-datastores" module
-^I-D.ietf-netmod-revised-datastores^.  The use of identities allows
+^RFC8342^.  The use of identities allows
 future expansion in a way that the choice-based strategy from the
 original operations (e.g., <get-config>, <edit-config>) does not.
 
@@ -153,7 +153,7 @@ either the 'basic-mode' or 'also-supported' parameters of the
 
 - If no "with-defaults" parameter is specified, or if it is set to
   "explicit", "report-all", or "report-all-tagged", then the "in use"
-  values, as defined in ^I-D.ietf-netmod-revised-datastores^ section
+  values, as defined in ^RFC8342^ section
   5.3, are returned from the operational state datastore, even if a
   node happens to have a default statement in the YANG module, and
   this default value is being used by the server.  If the
@@ -166,7 +166,7 @@ either the 'basic-mode' or 'also-supported' parameters of the
   any values that match the default defined in the YANG schema.
 
 Support for "with-defaults" in <get-data> operations on any datastore
-not defined in ^I-D.ietf-netmod-revised-datastores^ SHOULD be defined
+not defined in ^RFC8342^ SHOULD be defined
 by the specification for the datastore.
 
 
@@ -186,12 +186,12 @@ Data in the operational state datastore can come from multiple
 sources.  The server should return the most accurate value for the
 "origin" metadata annotation as possible, indicating the source of the
 operational value, as specified in Section 5.3.4 of
-^I-D.ietf-netmod-revised-datastores^.
+^RFC8342^.
 
 When encoding the origin metadata annotation for a hierarchy of
 returned nodes, the annotation may be omitted for a child node when
 the value matches that of the parent node, as described in the
-"ietf-origin" YANG module ^I-D.ietf-netmod-revised-datastores^.
+"ietf-origin" YANG module ^RFC8342^.
 
 The "with-origin" parameter is optional to support.  It is identified
 with the feature "origin".
@@ -268,7 +268,7 @@ datastore then an error is returned, as specified in
 * NETCONF Datastores YANG Module @yangmod@
 
 This module imports definitions from ^RFC6991^, ^RFC6241^, ^RFC6243^,
-and ^I-D.ietf-netmod-revised-datastores^.
+and ^RFC8342^.
 
 RFC Ed.: update the date below with the date of RFC publication and
 remove this note.
@@ -315,7 +315,7 @@ secure transport layer and the mandatory-to-implement secure transport
 is Secure Shell (SSH) ^RFC6242^.
 
 The network configuration access control model
-^I-D.ietf-netconf-rfc6536bis^ provides the means to restrict access
+^RFC8341^ provides the means to restrict access
 for particular NETCONF users to a preconfigured subset of all
 available NETCONF protocol operations and content.
 

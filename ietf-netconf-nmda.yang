@@ -13,13 +13,11 @@ module ietf-netconf-nmda {
   }
   import ietf-datastores {
     prefix ds;
-    // RFC Ed.: update the reference below with the actual RFC number
-    reference "RFC XXXX: Network Management Datastore Architecture.";
+    reference "RFC 8342: Network Management Datastore Architecture.";
   }
   import ietf-origin {
     prefix or;
-    // RFC Ed.: update the reference below with the actual RFC number
-    reference "RFC XXXX: Network Management Datastore Architecture.";
+    reference "RFC 8342: Network Management Datastore Architecture.";
   }
   import ietf-netconf {
     prefix nc;
@@ -85,7 +83,7 @@ module ietf-netconf-nmda {
     description
       "Indicates that the server supports the 'origin' annotation.";
     reference
-      "RFC XXXX: Network Management Datastore Architecture";
+      "RFC 8342: Network Management Datastore Architecture";
   }
 
   feature with-defaults {
