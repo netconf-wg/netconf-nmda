@@ -16,5 +16,5 @@
 
 {{references:
     title "Informative References";
-    ietf-ref I-D.ietf-netmod-yang-tree-diagrams;
+    ietf-ref RFC8340;
 }}

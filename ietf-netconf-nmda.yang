@@ -71,7 +71,7 @@ module ietf-netconf-nmda {
   // and remove this note.
   // RFC Ed.: replace XXXX with actual RFC number and remove this
   // note.
-  revision 2018-02-28 {
+  revision 2018-04-20 {
     description
       "Initial revision.";
     reference
