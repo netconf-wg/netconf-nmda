@@ -71,7 +71,7 @@ module ietf-netconf-nmda {
   // and remove this note.
   // RFC Ed.: replace XXXX with actual RFC number and remove this
   // note.
-  revision 2018-04-20 {
+  revision 2018-05-22 {
     description
       "Initial revision.";
     reference
@@ -203,7 +203,10 @@ module ietf-netconf-nmda {
             range "1..65535";
           }
           type enumeration {
-            enum "unbounded";
+            enum "unbounded" {
+              description
+                "All descendant nodes are included.";
+            }
           }
         }
         default "unbounded";
