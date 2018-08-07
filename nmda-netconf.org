@@ -129,10 +129,11 @@ The "config-filter" parameter can be used to retrieve only "config
 true" or "config false" nodes.
 
 The "origin-filter" parameter, which can be present multiple times,
-selects nodes matching any of the given values. The
+selects nodes equal to or derived from any of the given values. The
 "negated-origin-filter", which can be present multiple times, selects
-nodes that do not match all given values. The "origin-filter"
-and "negated-origin-filter" parameters cannot be used together.
+nodes that do are not equal or derived from any of the given values.
+The "origin-filter" and "negated-origin-filter" parameters cannot be
+used together.
 
 The "max-depth" parameter can be used by the client to limit the
 number of sub-tree levels that are returned in the reply.
@@ -144,7 +145,7 @@ If the "with-defaults" capability is supported by the server, then the
 <get-data> operations that target conventional configuration
 datastores.
 
-The "with-defaults" parameter is optional to support for <get-data>
+The "with-defaults" parameter is OPTIONAL to support for <get-data>
 operations that target <operational>.  The associated capability to
 indicate a server's support is identified with the URI:
 
@@ -174,7 +175,6 @@ Support for "with-defaults" in <get-data> operations on any datastore
 not defined in ^RFC8342^ SHOULD be defined
 by the specification for the datastore.
 
-
 **** Origin Metadata Attribute
 
 The <get-data> operation defines a parameter named "with-origin",
@@ -198,7 +198,7 @@ returned nodes, the annotation may be omitted for a child node when
 the value matches that of the parent node, as described in the
 "ietf-origin" YANG module ^RFC8342^.
 
-The "with-origin" parameter is optional to support.  It is identified
+The "with-origin" parameter is OPTIONAL to support.  It is identified
 with the feature "origin".
 
 **** Example: Retrieving an entire subtree from <running>
@@ -224,12 +224,14 @@ datastore, then an error is returned, as specified in
 The "datastore" parameter is a datastore identity that indicates the
 desired target datastore where changes should be made.
 
-The "default-operation" parameter is a copy of the "default-operation"
-parameter of the <edit-config> operation.
+The "default-operation" parameter selects the default operation to
+use.  It is a copy of the "default-operation" parameter of the
+<edit-config> operation.
 
-The "edit-content" choice mirrors the "edit-content" choice of the
-<edit-config> operation. Note, however, that the "config" element in
-the "edit-content" choice of <edit-data> uses "anydata" (introduced in
+The "edit-content" parameter specifies the content for the edit
+operation.  It mirrors the "edit-content" choice of the <edit-config>
+operation.  Note, however, that the "config" element in the
+"edit-content" choice of <edit-data> uses "anydata" (introduced in
 YANG 1.1) while the "config" element in the "edit-content" choice of
 <edit-config> used "anyxml".
 
