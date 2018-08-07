@@ -105,8 +105,8 @@ module ietf-netconf-nmda {
        by get-data must satisfy all filters, i.e., the filter
        criteria are logically ANDed.
 
-       Any ancestor nodes (including list keys) of nodes selected by
-       the filters are included in the response.
+       Any ancestor nodes (including list keys) of nodes selected by
+       the filters are included in the response.
 
        The 'with-origin' parameter is only valid for an operational
        datastore. If 'with-origin' is used with an invalid datastore,
