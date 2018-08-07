@@ -1,0 +1,14 @@
+<rpc-reply message-id="102"
+    xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <data xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-nmda">
+    <bgp xmlns="http://example.com/ns/bgp"
+         xmlns:or="urn:ietf:params:xml:ns:yang:ietf-origin"
+         or:origin="or:intended">
+      <peer>
+        <name>2001:db8::2:3</name>
+        <local-port or:origin="or:system">60794</local-port>
+        <state>established</state>
+      </peer>
+    </bgp>
+  </data>
+</rpc-reply>

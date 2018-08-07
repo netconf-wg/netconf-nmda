@@ -1,0 +1,14 @@
+<rpc message-id="102"
+     xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <get-data xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-nmda"
+            xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores"
+            xmlns:or="urn:ietf:params:xml:ns:yang:ietf-origin">
+    <datastore>ds:operational</datastore>
+    <subtree-filter>
+      <bgp xmlns="http://example.com/ns/bgp"/>
+    </subtree-filter>
+    <origin-filter>or:intended</origin-filter>
+    <origin-filter>or:system</origin-filter>
+    <with-origin/>
+  </get-data>
+</rpc>

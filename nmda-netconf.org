@@ -210,6 +210,16 @@ example shown in Section 7.1 of ^RFC6241^.
 
 !! include-figure ex-get-data-reply.xml
 
+**** Example: Retrieving a filtered subtree from <operational>
+
+The following example shows how the "origin-filter" can be
+used to retrieve nodes from <operational>.  The example uses the
+fictional data model defined in Appendix C of ^RFC8342^.
+
+!! include-figure ex-get-data-req-origin.xml
+
+!! include-figure ex-get-data-reply-origin.xml
+
 *** The <edit-data> Operation
 
 The <edit-data> operation changes the contents of a writable
