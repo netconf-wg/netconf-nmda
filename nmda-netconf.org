@@ -58,9 +58,11 @@ Tree diagrams used in this document follow the notation defined in
 
 RFC Ed.: Update 201X-XX-XX below with correct date.
 
-An NMDA-compliant NETCONF server MUST support the operational state
-datastore and it MUST implement at least revision 201X-XX-XX of the
-"ietf-yang-library" module defined in ^I-D.ietf-netconf-rfc7895bis^.
+An NMDA-compliant NETCONF server MUST implement the module
+"ietf-netconf-nmda" defined in this document, MUST support the
+operational state datastore, and it MUST implement at least revision
+201X-XX-XX of the "ietf-yang-library" module defined in
+^I-D.ietf-netconf-rfc7895bis^.
 
 A NETCONF client can discover which datastores and YANG modules the
 server supports by reading the YANG library information from the
