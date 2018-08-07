@@ -138,6 +138,32 @@ used together.
 The "max-depth" parameter can be used by the client to limit the
 number of sub-tree levels that are returned in the reply.
 
+**** Origin Metadata Attribute
+
+The <get-data> operation defines a parameter named "with-origin",
+which if present, requests that the server includes "origin" metadata
+annotations in its response, as detailed in the NMDA.  This parameter
+is only valid for the operational state datastore and any datastores
+with identities derived from the "operational" identity.  Otherwise,
+if an invalid datastore is specified then an error is returned, as
+specified in "ietf-netconf-nmda" (see ^yangmod^). Note that "origin"
+metadata annotations are not included in a response unless a client
+explicitly requests them.
+
+Data in the operational state datastore can come from multiple
+sources.  The server should return the most accurate value for the
+"origin" metadata annotation as possible, indicating the source of the
+operational value, as specified in Section 5.3.4 of
+^RFC8342^.
+
+When encoding the origin metadata annotation for a hierarchy of
+returned nodes, the annotation may be omitted for a child node when
+the value matches that of the parent node, as described in the
+"ietf-origin" YANG module ^RFC8342^.
+
+The "with-origin" parameter is OPTIONAL to support.  It is identified
+with the feature "origin".
+
 **** With-defaults interactions
 
 If the "with-defaults" capability is supported by the server, then the
@@ -174,32 +200,6 @@ either the 'basic-mode' or 'also-supported' parameters of the
 Support for "with-defaults" in <get-data> operations on any datastore
 not defined in ^RFC8342^ SHOULD be defined
 by the specification for the datastore.
-
-**** Origin Metadata Attribute
-
-The <get-data> operation defines a parameter named "with-origin",
-which if present, requests that the server includes "origin" metadata
-annotations in its response, as detailed in the NMDA.  This parameter
-is only valid for the operational state datastore and any datastores
-with identities derived from the "operational" identity.  Otherwise,
-if an invalid datastore is specified then an error is returned, as
-specified in "ietf-netconf-nmda" (see ^yangmod^). Note that "origin"
-metadata annotations are not included in a response unless a client
-explicitly requests them.
-
-Data in the operational state datastore can come from multiple
-sources.  The server should return the most accurate value for the
-"origin" metadata annotation as possible, indicating the source of the
-operational value, as specified in Section 5.3.4 of
-^RFC8342^.
-
-When encoding the origin metadata annotation for a hierarchy of
-returned nodes, the annotation may be omitted for a child node when
-the value matches that of the parent node, as described in the
-"ietf-origin" YANG module ^RFC8342^.
-
-The "with-origin" parameter is OPTIONAL to support.  It is identified
-with the feature "origin".
 
 **** Example: Retrieving an entire subtree from <running>
 
