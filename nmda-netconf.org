@@ -200,13 +200,14 @@ either the 'basic-mode' or 'also-supported' parameters of the
   any values that match the default defined in the YANG schema.
 
 Support for "with-defaults" in <get-data> operations on any datastore
-not defined in ^RFC8342^ SHOULD be defined
+not defined in ^RFC8342^ should be defined
 by the specification for the datastore.
 
 **** Example: Retrieving an entire subtree from <running>
 
 The following example shows the <get-data> version of the <get-config>
-example shown in Section 7.1 of ^RFC6241^.
+example shown in Section 7.1 of ^RFC6241^, which selects the entire
+"/users" subtree:
 
 !! include-figure ex-get-data-req.xml
 
@@ -257,7 +258,7 @@ semantics of editing modes is the same as for <edit-config>, as
 described in section 4.5.2 of ^RFC6243^.
 
 Semantics for "with-defaults" in <edit-data> operations on any non
-conventional configuration datastores SHOULD be defined by the
+conventional configuration datastores should be defined by the
 specification for the datastore.
 
 **** Example: Setting a leaf of an interface in <running>
